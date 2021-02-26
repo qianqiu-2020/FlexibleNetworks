@@ -17,10 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.flexiblenetworks.BaseActivity;
-import com.example.flexiblenetworks.R;
-
-public class registerActivity extends LoginActivity implements View.OnClickListener{
+public class registerActivity extends BaseActivity implements View.OnClickListener{
     private EditText name;
     private EditText passwordEdit;
     private EditText surePassword;
@@ -35,7 +32,7 @@ public class registerActivity extends LoginActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
-        this.Init();
+        Init();
     }
 
     private void Init() {
