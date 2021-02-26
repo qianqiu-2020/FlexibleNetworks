@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textColor="#00ff00"
+        android:text="【公告栏】\n欢迎使用本软件！"
+        />
+    <Button
+        android:id="@+id/information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="公开平台">
+    </Button>
+    <Button
+        android:id="@+id/friendchat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="好友聊天">
+    </Button>
+    <Button
+        android:id="@+id/market"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="交易市场（待开发）">
+    </Button>
+    <Button
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="人群分布信息（待开发）">
+    </Button>
+
+
+</LinearLayout>
