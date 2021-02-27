@@ -1,5 +1,6 @@
 package com.example.flexiblenetworks;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -32,6 +33,8 @@ public class registerActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
+/*        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null) actionBar.hide();*/
         Init();
     }
 

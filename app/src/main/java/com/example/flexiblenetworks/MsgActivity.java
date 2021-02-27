@@ -133,7 +133,7 @@ public class MsgActivity extends BaseActivity {
     private void sendData(String content) {//content已不为空
         OkHttpClient okHttpClient=new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");//数据类型为json格式，
-        String jsonStr = "{ \"reqType\":0,\"perception\": {\"inputText\": {\"text\": \""+content+"\" },\"inputImage\": {\"url\": \"imageUrl\" },\"selfInfo\": {\"location\": {\"city\": \"北京\",\"province\": \"北京\",\"street\": \"信息路\" } } },\"userInfo\": {\"apiKey\": \"2bf269c26b324fc8bcf8d2b332313182\",\"userId\": \"demo\" } }";
+        String jsonStr = "{ \"reqType\":0,\"perception\": {\"inputText\": {\"text\": \""+content+"\" },\"inputImage\": {\"url\": \"imageUrl\" },\"selfInfo\": {\"location\": {\"city\": \"北京\",\"province\": \"北京\",\"street\": \"信息路\" } } },\"userInfo\": {\"apiKey\": \"2bf269c26b324fc8bcf8d2b332313182\",\"userId\": \""+user_id+"\" } }";
 
         RequestBody body = RequestBody.create(JSON, jsonStr);
         Request request = new Request.Builder()

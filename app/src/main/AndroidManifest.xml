@@ -32,7 +32,8 @@
 
         <activity android:name=".LBSActivity" />
         <activity android:name=".MsgActivity" />
-        <activity android:name=".FriendChatActivity" />
+        <activity android:name=".FriendChatActivity"
+            android:label="好友列表1" />
         <activity android:name=".InformationActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">

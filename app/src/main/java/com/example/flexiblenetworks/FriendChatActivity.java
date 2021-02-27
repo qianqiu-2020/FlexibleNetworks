@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
 import java.util.ArrayList;
@@ -18,14 +22,40 @@ public class FriendChatActivity extends BaseActivity {
 
   //  private String[] data={"image1","image2","image3","image4","image5","image6","image7","image8","image9","image10","image11","image12","image13"};
     private List<Friend> FriendList=new ArrayList<>();
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.update:
+                Toast.makeText(this,"刷新好友列表",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.add:
+                Toast.makeText(this,"添加",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.scan:
+                Toast.makeText(this,"扫描",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+        return true;
+    }
+
     /*活动创建时先加载一次在线列表*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendchat);
 
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null) actionBar.hide();
+        setSupportActionBar(findViewById(R.id.toolbar));//如果不这样，菜单则不会显示，但注意此时如果toolbar中没有现在的新布局，则会显示androidmanifrst中的应用名/活动中的label
+/*        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null) actionBar.hide();*/
 
         new Thread(netThread_udp).start();//从服务端获取在线列表，暂未实现
         initFriends();//故先直接使用本地已有资源初始化
@@ -59,11 +89,11 @@ public class FriendChatActivity extends BaseActivity {
     }
 
     private void initFriends(){
-        for(int i=0;i<2;i++){
+//        for(int i=0;i<2;i++){
 
             Friend image1=new Friend("图灵机器人",R.drawable.image_1);
             FriendList.add(image1);
-            Friend image2=new Friend("image2",R.drawable.image_2);
+/*            Friend image2=new Friend("image2",R.drawable.image_2);
             FriendList.add(image2);
             Friend image3=new Friend("image3",R.drawable.image_3);
             FriendList.add(image3);
@@ -80,7 +110,7 @@ public class FriendChatActivity extends BaseActivity {
             Friend image9=new Friend("image9",R.drawable.image_9);
             FriendList.add(image9);
             Friend image10=new Friend("image10",R.drawable.image_10);
-            FriendList.add(image10);
-        }
+            FriendList.add(image10);*/
+//        }
     }
 }
