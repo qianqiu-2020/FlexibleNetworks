@@ -35,11 +35,11 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         /*获取每一项中的控件*/
         ImageView fruitImage=(ImageView)view.findViewById(R.id.friend_image);
         TextView fruitName=(TextView)view.findViewById(R.id.friend_name);
-        EditText editText=(EditText)view.findViewById(R.id.edit_text);
+        //EditText editText=(EditText)view.findViewById(R.id.edit_text);
         /*把从适配器对应的List中取到的数据设置到控件中*/
         fruitImage.setImageResource(friend.getImageId());
         fruitName.setText(friend.getName());
-        editText.setText(friend.getName());
+        //editText.setText(friend.getName());
 
         return view;
     }

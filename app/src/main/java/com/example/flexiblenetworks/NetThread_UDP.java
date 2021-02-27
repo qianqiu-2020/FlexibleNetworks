@@ -25,7 +25,7 @@ public class NetThread_UDP implements Runnable {
     int port = 8520;
     static Handler handler;
     String aimip;
-    int aimport;
+    int aimport;//啦啦啦啦
 
     public void setMsg(Msg msg1) {
         msg = msg1;

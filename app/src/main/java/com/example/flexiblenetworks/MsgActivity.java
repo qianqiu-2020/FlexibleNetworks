@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -56,18 +57,29 @@ public class MsgActivity extends BaseActivity {
             JSONObject intent=obj.getJSONObject("intent");
             int code=intent.getInt("code");
             JSONArray results=obj.getJSONArray("results");
+            Log.d("mark显示接收消息内容21",String.valueOf(results.length()));
+
             for(int i=0;i<results.length();i++)
             {
+                String content="";
                 JSONObject result=results.getJSONObject(i);
                 JSONObject values=result.getJSONObject("values");
-                String content=values.getString("text");
-
+                if(values.has("text"))
+                    content=values.getString("text");
+                if(values.has("url"))
+                {content=values.getString("url");
+                    inputText.setText(content);}
+            /*    if(results.length()==1)
+                    content=values.getString("text");
+                else */
+                Log.d("mark显示接收消息内容2",content);
                 switch (code){
                     case 4003:
                         showData("主人，我今天累了，我要休息了，明天再来找我耍吧");
-                        break;
+                        continue;
                     default:
                         showData(content);
+                        continue;
                 }
             }
         } catch (JSONException e) {
@@ -79,7 +91,7 @@ public class MsgActivity extends BaseActivity {
         /*新增消息时的操作*/
         Msg msg=new Msg(Msg.TYPE_RECEIVERD,0,content);
         msgList.add(msg);//添加消息到消息列表
-        Log.d("mark显示接收消息内容",content);
+        Log.d("mark显示接收消息内容3",content);
         adapter.notifyItemInserted(msgList.size()-1);//更新适配器，通知适配器消息列表有新的数据插入
         msgRecyclerView.scrollToPosition(msgList.size()-1);//显示最新的消息，定位到最后一行
     }
@@ -93,9 +105,9 @@ public class MsgActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg);//注意指向的布局
-
+        if(chat_aim.getName().equals("图灵机器人"))
         initMsgs();//初始化消息列表，当前未使用网络线程，故使用本地数据
-
+        else tempinitMsgs();
         inputText=(EditText)findViewById(R.id.input_text);
         send=(Button)findViewById(R.id.send);
         msgRecyclerView=(RecyclerView)findViewById(R.id.msg_recycler_view);
@@ -105,6 +117,10 @@ public class MsgActivity extends BaseActivity {
         adapter=new MsgAdapter(msgList);
         msgRecyclerView.setAdapter(adapter);//给RecyclerView设置适配器
         Log.d("mark",msgList.get(1).getContent());//从List中获取内容的方法
+
+        setSupportActionBar(findViewById(R.id.toolbar));
+        TextView name=findViewById(R.id.name);
+        name.setText(chat_aim.getName());
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +135,9 @@ public class MsgActivity extends BaseActivity {
                     msgRecyclerView.scrollToPosition(msgList.size()-1);//显示最新的消息，定位到最后一行
                     inputText.setText("");
                     /*向图灵服务器发送数据*/
+                    if(chat_aim.getName().equals("图灵机器人"))
                     sendData(content);
+
 /*                    *//*向服务器发送信息，未实现*//*
                     netThread.setMsg(msg);
                     netThread.setHandler(handler);
@@ -133,7 +151,7 @@ public class MsgActivity extends BaseActivity {
     private void sendData(String content) {//content已不为空
         OkHttpClient okHttpClient=new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");//数据类型为json格式，
-        String jsonStr = "{ \"reqType\":0,\"perception\": {\"inputText\": {\"text\": \""+content+"\" },\"inputImage\": {\"url\": \"imageUrl\" },\"selfInfo\": {\"location\": {\"city\": \"北京\",\"province\": \"北京\",\"street\": \"信息路\" } } },\"userInfo\": {\"apiKey\": \"2bf269c26b324fc8bcf8d2b332313182\",\"userId\": \"demo\" } }";
+        String jsonStr = "{ \"reqType\":0,\"perception\": {\"inputText\": {\"text\": \""+content+"\" },\"inputImage\": {\"url\": \"imageUrl\" },\"selfInfo\": {\"location\": {\"city\": \"北京\",\"province\": \"北京\",\"street\": \"信息路\" } } },\"userInfo\": {\"apiKey\": \"2bf269c26b324fc8bcf8d2b332313182\",\"userId\": \""+user_id+"\" } }";
 
         RequestBody body = RequestBody.create(JSON, jsonStr);
         Request request = new Request.Builder()
@@ -179,11 +197,19 @@ public class MsgActivity extends BaseActivity {
     }
     /*初始化消息列表，后续可改写为处理未读消息*/
     private void initMsgs() {
-        Msg msg1=new Msg(Msg.TYPE_RECEIVERD,0,"Hello guy.");
+        Msg msg1=new Msg(Msg.TYPE_RECEIVERD,0,"这里是图灵机器人，来找我聊天吧！");
         msgList.add(msg1);
-        Msg msg2=new Msg(Msg.TYPE_SENT,0,"Hello.Who is that?");
+        Msg msg2=new Msg(Msg.TYPE_RECEIVERD,0,"可以让我讲笑话，脑筋急转弯，玩成语接龙，新闻资讯，星座运势，歇后语，绕口令，顺口溜，天气查询，菜谱大全，快递查询，列车查询，日期查询，城市邮编等等....");
         msgList.add(msg2);
-        Msg msg3=new Msg(Msg.TYPE_RECEIVERD,0,"This is Tom.Nice talking to you.");
+/*        Msg msg3=new Msg(Msg.TYPE_RECEIVERD,0,"This is Tom.Nice talking to you.");
+        msgList.add(msg3);*/
+    }
+    private void tempinitMsgs() {
+        Msg msg1=new Msg(Msg.TYPE_RECEIVERD,0,"暂时无法和好友聊天哦~");
+        msgList.add(msg1);
+        Msg msg2=new Msg(Msg.TYPE_RECEIVERD,0,"去试试和图灵机器人聊天吧！");
+        msgList.add(msg2);
+        Msg msg3=new Msg(Msg.TYPE_SENT,0,"好的-.-");
         msgList.add(msg3);
     }
 }

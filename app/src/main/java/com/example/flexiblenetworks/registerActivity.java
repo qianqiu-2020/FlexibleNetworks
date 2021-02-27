@@ -1,5 +1,6 @@
 package com.example.flexiblenetworks;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -17,10 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.flexiblenetworks.BaseActivity;
-import com.example.flexiblenetworks.R;
-
-public class registerActivity extends LoginActivity implements View.OnClickListener{
+public class registerActivity extends BaseActivity implements View.OnClickListener{
     private EditText name;
     private EditText passwordEdit;
     private EditText surePassword;
@@ -35,7 +33,9 @@ public class registerActivity extends LoginActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
-        this.Init();
+/*        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null) actionBar.hide();*/
+        Init();
     }
 
     private void Init() {

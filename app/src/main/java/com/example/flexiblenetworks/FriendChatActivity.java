@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 
 import java.util.ArrayList;
@@ -18,26 +22,65 @@ public class FriendChatActivity extends BaseActivity {
 
   //  private String[] data={"image1","image2","image3","image4","image5","image6","image7","image8","image9","image10","image11","image12","image13"};
     private List<Friend> FriendList=new ArrayList<>();
+    FriendAdapter adapter;
+    ListView listView;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.update:
+                Toast.makeText(this,"刷新好友列表",Toast.LENGTH_SHORT).show();
+                /*向服务器发送申请列表*/
+                Msg msg=new Msg(Msg.TYPE_GET_ONLINELIST,user_id,"get user online list");//构造自定义协议内容
+                Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
+                netThread.setMsg(msg);//将要发送内容设置好
+                netThread.setHandler(handler);//
+                new Thread(netThread).start();//网络子线程开始运行
+
+                break;
+            case R.id.add:
+                Toast.makeText(this,"添加",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.scan:
+                Toast.makeText(this,"扫描",Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+        return true;
+    }
+
     /*活动创建时先加载一次在线列表*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendchat);
 
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null) actionBar.hide();
+        setSupportActionBar(findViewById(R.id.toolbar));//如果不这样，菜单则不会显示，但注意此时如果toolbar中没有现在的新布局，则会显示androidmanifrst中的应用名/活动中的label
+/*        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null) actionBar.hide();*/
 
-        new Thread(netThread_udp).start();//从服务端获取在线列表，暂未实现
-        initFriends();//故先直接使用本地已有资源初始化
+        /*向服务器发送申请，获取在线列表*/
+        Msg msg=new Msg(Msg.TYPE_GET_ONLINELIST,user_id,"get user online list");//构造自定义协议内容
+        Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
+        netThread.setMsg(msg);//将要发送内容设置好
+        netThread.setHandler(handler);//
+        new Thread(netThread).start();//网络子线程开始运行
 
-        FriendAdapter adapter=new FriendAdapter(FriendChatActivity.this,R.layout.friend_item ,FriendList);//实例化适配器
-        ListView listView=(ListView)findViewById(R.id.list_view);//获取listview实例
+
+        adapter=new FriendAdapter(FriendChatActivity.this,R.layout.friend_item ,FriendList);//实例化适配器
+        listView=(ListView)findViewById(R.id.list_view);//获取listview实例
         listView.setAdapter(adapter);//给listview设置适配器
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Friend Friend=FriendList.get(position);//获取对应项内容
                 Toast.makeText(FriendChatActivity.this,Friend.getName(),Toast.LENGTH_SHORT).show();
+                chat_aim=Friend;
 
                 Intent intent=new Intent(FriendChatActivity.this,MsgActivity.class);//点击时跳转到聊天页面
                 startActivity(intent);
@@ -55,15 +98,30 @@ public class FriendChatActivity extends BaseActivity {
                 Friend temp=new Friend(content,R.drawable.image_1);
                 FriendList.add(temp);
             }
+            case Msg.TYPE_GET_ONLINELIST:{
+                Log.d("msgProssess_Chat","收到申请的在线列表"+content);
+                initFriends();
+                List<Friend> tempfriendlist=new ArrayList<>();
+                String[] templist=content.split("\n");
+                for(int i=0;i<templist.length;i++)
+                {
+                    String[]tempfriend=templist[i].split("\\|");//注意转义字符！
+                    Friend temp=new Friend(Integer.parseInt(tempfriend[0]),tempfriend[1],R.drawable.image_6,tempfriend[2],Integer.parseInt(tempfriend[3]));
+                    FriendList.add(temp);
+                }
+                adapter.notifyDataSetChanged();
+                        //notifyItemInserted(msgList.size()-1);//更新适配器，通知适配器消息列表有新的数据插入
+                listView.smoothScrollToPosition(FriendList.size()-1);//显示最新的消息，定位到最后一行
+            }
         }
     }
 
     private void initFriends(){
-        for(int i=0;i<2;i++){
-
+//        for(int i=0;i<2;i++){
+            FriendList.clear();
             Friend image1=new Friend("图灵机器人",R.drawable.image_1);
             FriendList.add(image1);
-            Friend image2=new Friend("image2",R.drawable.image_2);
+/*            Friend image2=new Friend("image2",R.drawable.image_2);
             FriendList.add(image2);
             Friend image3=new Friend("image3",R.drawable.image_3);
             FriendList.add(image3);
@@ -80,7 +138,7 @@ public class FriendChatActivity extends BaseActivity {
             Friend image9=new Friend("image9",R.drawable.image_9);
             FriendList.add(image9);
             Friend image10=new Friend("image10",R.drawable.image_10);
-            FriendList.add(image10);
-        }
+            FriendList.add(image10);*/
+//        }
     }
 }

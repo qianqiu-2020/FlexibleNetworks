@@ -41,11 +41,16 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remeberPassword;
     private CheckBox autoLogin;
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+          Log.d("销毁","login");
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null) actionBar.hide();
+/*        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null) actionBar.hide();*/
         accountEdit=(EditText)findViewById(R.id.account);
         passwordEdit=(EditText)findViewById(R.id.password);
         registerButton=(Button)findViewById(R.id.register);

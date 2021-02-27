@@ -21,6 +21,7 @@ import java.util.List;
 */
 public abstract class BaseActivity extends AppCompatActivity {
     protected static long user_id;//生存期为应用存在全程，记录客户端登录的账号id，在登录时从服务端获取
+    protected static Friend chat_aim;//聊天目的方
     protected static int mark=1;//客户端位置信息向服务端发送次数，在LBSactivity（定位活动）中被使用
     protected static List<String> online_list=new ArrayList<>();//客户端维护的在线列表，从主服务器获取
     /*每个活动创建时，加入到ActivityCollector中*/

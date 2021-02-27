@@ -36,6 +36,19 @@
         android:layout_height="wrap_content"
         android:text="人群分布信息（待开发）">
     </Button>
-
+    <TextView
+        android:id="@+id/text_view2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="#00BCD4"
+        android:text="当前版本v0.1"
+        />
+    <Button
+        android:id="@+id/update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下载最新版本">
+    </Button>
 
 </LinearLayout>
