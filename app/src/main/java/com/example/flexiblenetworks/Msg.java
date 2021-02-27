@@ -13,7 +13,7 @@ public class Msg extends Object {
     public static final int TYPE_LOGIN_REGISTER=7;
     public static final int TYPE_ONLINE_LIST=8;
     public static final int TYPE_LBS=9;
-
+    public static final int TYPE_GET_ONLINELIST=10;
     public static final int TYPE_TULING_OK=100;
 
     private int type;//消息类型

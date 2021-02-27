@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivity {
     private Button information;
     private Button friendchat;
     private Button location;
+    private Button update;
     private TextView broad;
     private String broadcast;
 
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity {
         friendchat=(Button)findViewById(R.id.friendchat);
         location=(Button)findViewById(R.id.location);
         broad=(TextView)findViewById(R.id.text_view);
+        update=(Button)findViewById(R.id.update);
         /*主动向服务器发送获取公告信息*/
         Msg msg=new Msg(Msg.TYPE_SEND_BROADCAST,user_id,"broadcast");
         Log.d("msg","消息构造完成");
@@ -99,6 +101,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,LBSActivity.class);//打开定位模块
+                startActivity(intent);
+                //finish();主活动一直存在不销毁
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,DownLoadActivity.class);//打开下载模块
                 startActivity(intent);
                 //finish();主活动一直存在不销毁
             }

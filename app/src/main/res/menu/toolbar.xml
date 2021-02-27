@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/update"
-        android:title="update"
+        android:title="刷新"
         app:showAsAction="always"></item>
     <item
         android:id="@+id/add"

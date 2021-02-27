@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-}
+}//这里表示本程序是应用程序模块，还有一种是库模块
 
 android {
     compileSdkVersion 30
