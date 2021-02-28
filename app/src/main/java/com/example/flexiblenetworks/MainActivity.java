@@ -1,5 +1,6 @@
 package com.example.flexiblenetworks;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
@@ -8,12 +9,22 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
+
 
 /*此活动为主界面，集成了各种不同的功能模块，也包含了公告栏，此活动登录后一直存在，不被销毁*/
 public class MainActivity extends BaseActivity {
@@ -23,6 +34,8 @@ public class MainActivity extends BaseActivity {
     private Button update;
     private TextView broad;
     private String broadcast;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
 
     public static class MyCallback implements ComponentCallbacks {
         @Override
@@ -42,7 +55,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         MyCallback callBacks =new MyCallback();
         this.registerComponentCallbacks( callBacks );
-
         this.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -74,6 +86,28 @@ public class MainActivity extends BaseActivity {
         location=(Button)findViewById(R.id.location);
         broad=(TextView)findViewById(R.id.text_view);
         update=(Button)findViewById(R.id.update);
+        /**
+         * 滑动菜单,会出错
+         * */
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        navigationView=(NavigationView)findViewById(R.id.nav_view);
+        drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+        navigationView.setCheckedItem(R.id.nav_call);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                //可以在这里设置逻辑，这里只是用nav_call做一个示范
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
         /*主动向服务器发送获取公告信息*/
         Msg msg=new Msg(Msg.TYPE_SEND_BROADCAST,user_id,"broadcast");
         Log.d("msg","消息构造完成");
@@ -124,6 +158,16 @@ public class MainActivity extends BaseActivity {
                 broad.setText("[公告栏]\n"+content);
             }
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            default:
+        }
+        return true;
     }
 
     @Override
