@@ -10,35 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:id="@+id/toolbar"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            />
+
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="60dp"
             >
-            <TextView
-                android:id="@+id/text_view"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_top_bar_blue"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                ></androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/imageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="32sp"
-                android:textColor="#00ff00"
-                android:text="【公告栏】\n欢迎使用本软件！"
-                />
-            <TextView
-                android:id="@+id/text_view2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:textColor="#00BCD4"
-                android:text="当前版本v0.1"
-                />
+                android:background="#FFFFFF"
+                android:scaleType="fitXY"
+                android:src="@drawable/mainimage"></ImageView>
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -108,17 +104,31 @@
                         android:text="下载最新版本">
                     </Button>
                     <Button
-                        android:id="@+id/nullname"
+                        android:id="@+id/exit"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:layout_marginLeft="5dp"
-                        android:text="预留">
+                        android:text="退出登录">
                     </Button>
                 </LinearLayout>
             </LinearLayout>
-
-
+            <TextView
+                android:id="@+id/text_view2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="当前版本v0.11"
+                android:textColor="#00BCD4"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="#2D2F31"
+                android:text="【公告栏】\n欢迎使用本软件！"
+                />
         </LinearLayout>
     </FrameLayout>
     <com.google.android.material.navigation.NavigationView
@@ -128,7 +138,6 @@
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_hearder"/>
-
 </androidx.drawerlayout.widget.DrawerLayout>
 
 

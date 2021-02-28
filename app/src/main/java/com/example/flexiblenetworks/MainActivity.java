@@ -1,11 +1,11 @@
 package com.example.flexiblenetworks;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -15,11 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -32,10 +34,12 @@ public class MainActivity extends BaseActivity {
     private Button friendchat;
     private Button location;
     private Button update;
+    private Button exit;
     private TextView broad;
     private String broadcast;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private ImageView imageView;
 
     public static class MyCallback implements ComponentCallbacks {
         @Override
@@ -86,11 +90,13 @@ public class MainActivity extends BaseActivity {
         location=(Button)findViewById(R.id.location);
         broad=(TextView)findViewById(R.id.text_view);
         update=(Button)findViewById(R.id.update);
+        exit=(Button)findViewById(R.id.exit);
+        imageView=(ImageView)findViewById(R.id.imageview);
         /**
          * 滑动菜单,会出错
          * */
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        setSupportActionBar(findViewById(R.id.toolbar));
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBar actionBar=getSupportActionBar();
@@ -145,6 +151,20 @@ public class MainActivity extends BaseActivity {
                 Intent intent=new Intent(MainActivity.this,DownLoadActivity.class);//打开下载模块
                 startActivity(intent);
                 //finish();主活动一直存在不销毁
+            }
+        });
+        exit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();//退出程序
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.cug.edu.cn/"));
+                startActivity(intent);//打开官网
             }
         });
     }

@@ -129,14 +129,16 @@ public class LBSActivity extends BaseActivity {
             int errorCode = location.getLocType();
             //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
             StringBuilder currentPosition=new StringBuilder();
-            currentPosition.append("维度").append(latitude).append("\n");
-            currentPosition.append("经度").append(longitude).append("\n");
-            currentPosition.append("精度").append(radius).append("\n");
+            currentPosition.append("【您的位置信息如下】").append("\n");
+            currentPosition.append("经纬度坐标类型 ").append(coorType).append("\n");
+            currentPosition.append("维度 ").append(latitude).append("\n");
+            currentPosition.append("经度 ").append(longitude).append("\n");
+            currentPosition.append("精度 ").append(radius).append("\n");
 
             if(location.getLocType()==BDLocation.TypeGpsLocation){//判断定位方式
-                currentPosition.append("定位方式GPS").append("\n");
+                currentPosition.append("定位方式 GPS").append("\n");
             }else  if(location.getLocType()==BDLocation.TypeNetWorkLocation){
-                currentPosition.append("定位方式网络").append("\n");
+                currentPosition.append("定位方式 网络/GPS").append("\n");
             }
 
             currentPosition.append("国家 ").append(country).append("\n");
@@ -145,11 +147,13 @@ public class LBSActivity extends BaseActivity {
             currentPosition.append("区县 ").append(district).append("\n");
             currentPosition.append("乡镇信息 ").append(town).append("\n");
             currentPosition.append("街道信息 ").append(street).append("\n");
-            currentPosition.append("经纬度坐标类型 ").append(coorType);
             currentPosition.append("adcode ").append(adcode).append("\n");
             currentPosition.append("详细地址信息 ").append(addr).append("\n");
-            positionText.setText(currentPosition);//显示结果
+            currentPosition.append("---数据来自Baidu定位---");
 
+            if(!currentPosition.toString().contains("null"))
+            positionText.setText(currentPosition);//显示结果
+            else positionText.setText("请打开GPS");
             /*向主服务器发送定位结果*/
             if(mark>0 && !currentPosition.toString().contains("null")) {
                 Msg msg = new Msg(Msg.TYPE_LBS, user_id, currentPosition.toString());
