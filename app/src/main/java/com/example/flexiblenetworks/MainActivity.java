@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity {
     private Button location;
     private Button update;
     private Button exit;
+    private Button market;
     private TextView broad;
     private String broadcast;
     private NavigationView navigationView;
@@ -90,11 +91,9 @@ public class MainActivity extends BaseActivity {
         location=(Button)findViewById(R.id.location);
         broad=(TextView)findViewById(R.id.text_view);
         update=(Button)findViewById(R.id.update);
+        market=(Button)findViewById(R.id.market);
         exit=(Button)findViewById(R.id.exit);
         imageView=(ImageView)findViewById(R.id.imageview);
-        /**
-         * 滑动菜单,会出错
-         * */
 
         setSupportActionBar(findViewById(R.id.toolbar));
         navigationView=(NavigationView)findViewById(R.id.nav_view);
@@ -111,6 +110,13 @@ public class MainActivity extends BaseActivity {
                 //可以在这里设置逻辑，这里只是用nav_call做一个示范
                 drawerLayout.closeDrawers();
                 return true;
+            }
+        });
+        market.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,MarketActivity.class);
+                startActivity(intent);
             }
         });
 
