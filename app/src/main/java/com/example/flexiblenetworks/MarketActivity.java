@@ -1,17 +1,33 @@
 package com.example.flexiblenetworks;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MarketActivity extends AppCompatActivity {
+    private List<Titles> titlesList=new ArrayList<>();
+    private List<content> contentList=new ArrayList<>();
+    contentAdapter madapter;
+    ListView listView;
+
     FloatingDraftButton floatingDraftButton;
     com.google.android.material.floatingactionbutton.FloatingActionButton liveness;
     com.google.android.material.floatingactionbutton.FloatingActionButton floatingActionButton2;
@@ -24,6 +40,27 @@ public class MarketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
+
+        init();//初始化标题数据
+        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.titles);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        MarketAdapter adapter=new MarketAdapter(titlesList);
+        recyclerView.setAdapter(adapter);
+
+        initcontent();
+        madapter=new contentAdapter(MarketActivity.this,R.layout.content_item ,contentList);//实例化适配器
+        listView=(ListView)findViewById(R.id.content);//获取listview实例
+        listView.setAdapter(madapter);//给listview设置适配器
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                content mcontent=contentList.get(position);//获取对应项内容
+                Toast.makeText(MarketActivity.this,mcontent.getName(),Toast.LENGTH_SHORT).show();
+            }
+        });//每一项被点击时执行的操作
+
 
         ButterKnife.bind(this);
 
@@ -54,5 +91,36 @@ public class MarketActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void init(){
+        for(int i=0;i<2;i++){
+            Titles one=new Titles("首页");
+            titlesList.add(one);
+            Titles two=new Titles("手机");
+            titlesList.add(two);
+            Titles three=new Titles("电脑");
+            titlesList.add(three);
+            Titles four=new Titles("首饰");
+            titlesList.add(four);
+            Titles five=new Titles("书籍");
+            titlesList.add(five);
+
+        }
+    }
+    private void initcontent(){
+        for(int i=0;i<2;i++){
+            content one=new content("首页",R.drawable.image_1);
+            contentList.add(one);
+            content two=new content("首页",R.drawable.image_2);
+            contentList.add(two);
+            content three=new content("首页",R.drawable.image_3);
+            contentList.add(three);
+            content four=new content("首页",R.drawable.image_4);
+            contentList.add(four);
+            content five=new content("首页",R.drawable.image_5);
+            contentList.add(five);
+
+
+        }
     }
 }
