@@ -165,6 +165,13 @@ public class LoginActivity extends BaseActivity {
     /*处理网络线程返回的数据*/
     @Override
     public void processMessage(Message msg) {
+        if(msg.what==1000)
+        {
+            Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"服务器未响应！",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
         String content=msg.getData().getString("content");
         //String []list;
         int mark;
@@ -191,7 +198,7 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case 1112:
-                Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号不存在,请先点击注册账号",Toast.LENGTH_LONG).show();
+                Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号不存在/服务器数据库连接断开",Toast.LENGTH_LONG).show();
                 break;
             case 1113:
                 Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"密码错误",Toast.LENGTH_SHORT).show();

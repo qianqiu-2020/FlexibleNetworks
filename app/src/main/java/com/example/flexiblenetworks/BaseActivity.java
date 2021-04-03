@@ -39,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void processMessage(Message msg);//在handle中调用此方法，处理handle收到的数据，每个活动都有且需实现的方法
     protected static NetThread netThread=new NetThread();
     protected static NetThread_UDP netThread_udp=new NetThread_UDP();
+    Thread listenTread;//接收udp消息
     /*handle用于沟通子线程与主线程，在子线程中调用handler.sendMessage(message)后，会调用此处的handleMessage方法*/
     protected Handler handler=new Handler(){
         public void handleMessage(Message msg){
@@ -48,5 +49,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
     };
-
+//    protected Handler handler2=new Handler(){
+//        public void handleMessage(Message msg){
+//            switch (msg.what){
+//                default:
+//                    processMessage(msg);//处理消息的方式由子类定义，如何确定哪个活动处理？
+//            }
+//        }
+//    };
 }

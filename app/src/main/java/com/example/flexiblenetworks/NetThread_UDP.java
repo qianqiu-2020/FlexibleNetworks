@@ -18,11 +18,11 @@ import java.net.Socket;
 import java.net.SocketException;
 
 public class NetThread_UDP implements Runnable {
-    private boolean onWork = true;    //线程工作标识
+    public boolean onWork = true;    //线程工作标识
 
     static Msg msg;
     String mainServerIp = "119.45.115.128";
-    int port = 8520;
+    int port = 11000;
     static Handler handler;
     String aimip;
     int aimport;//啦啦啦啦
@@ -77,6 +77,8 @@ public class NetThread_UDP implements Runnable {
      * */
     @Override
     public void run() {
+
+
         try {
             // 创建接收端Socket, 绑定本机IP地址, 绑定指定端口
             DatagramSocket socket = new DatagramSocket(port);
@@ -99,10 +101,12 @@ public class NetThread_UDP implements Runnable {
                 /*消息发往主线程*/
                 Msg reply = new Msg(result);
                 Log.d("mark", "已收到UDP消息" + result);
-                Message message = new Message();
-                message.what = Integer.valueOf(reply.getType());
-                Bundle data = new Bundle();
-                data.putString("content", reply.getContent());
+
+                /*将信息通过handle从当前子线程发送给主线程*/
+                Message message=new Message();
+                message.what=Integer.valueOf(reply.getType());
+                Bundle data=new Bundle();//携带较多数据时的方法
+                data.putString("content",reply.getContent());
                 message.setData(data);
                 handler.sendMessage(message);
             }
@@ -110,7 +114,8 @@ public class NetThread_UDP implements Runnable {
             socket.close();
         } catch (SocketException | UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
