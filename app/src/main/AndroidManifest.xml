@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlexibleNetworks"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MarketActivity"></activity>
+        <activity android:name=".message"></activity>
+        <activity android:name=".diBianLan" />
+        <activity android:name=".MarketActivity" />
         <activity android:name=".DownLoadActivity" />
         <activity android:name=".common_back_btn" />
         <activity android:name=".registerActivity" />
@@ -54,6 +56,7 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

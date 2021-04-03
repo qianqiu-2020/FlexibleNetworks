@@ -3,6 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/common_top_bar_blue">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="11dp"
+            android:scaleType="centerInside"
+            android:id="@id/back"
+            android:src="@drawable/mm_title_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="交易市场"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"

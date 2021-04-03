@@ -130,7 +130,17 @@
                 android:text="【公告栏】\n欢迎使用本软件！"
                 />
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp">
+            <include layout="@layout/activity_di_bian_lan"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>
+        </RelativeLayout>
     </FrameLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -138,6 +148,8 @@
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_hearder"/>
+
+
 </androidx.drawerlayout.widget.DrawerLayout>
 
 

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class MarketActivity extends AppCompatActivity {
     private List<content> contentList=new ArrayList<>();
     contentAdapter madapter;
     ListView listView;
+    ImageView imageView;
 
     FloatingDraftButton floatingDraftButton;
     com.google.android.material.floatingactionbutton.FloatingActionButton liveness;
@@ -60,6 +62,13 @@ public class MarketActivity extends AppCompatActivity {
                 Toast.makeText(MarketActivity.this,mcontent.getName(),Toast.LENGTH_SHORT).show();
             }
         });//每一项被点击时执行的操作
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //this.finish();
+            }
+        });
 
 
         ButterKnife.bind(this);

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -24,6 +25,7 @@ public class FriendChatActivity extends BaseActivity {
     private List<Friend> FriendList=new ArrayList<>();
     FriendAdapter adapter;
     ListView listView;
+    ImageView imageView;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar,menu);
@@ -86,6 +88,13 @@ public class FriendChatActivity extends BaseActivity {
                 startActivity(intent);
             }
         });//每一项被点击时执行的操作
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //this.finish();
+            }
+        });
     }
     /*此活动需要处理的网络消息为好友列表，当网络线程获取到数据时，会调用此方法*/
     @Override
