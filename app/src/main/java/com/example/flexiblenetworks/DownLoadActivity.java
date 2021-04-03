@@ -63,7 +63,7 @@ public class DownLoadActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.start_download:
                 Log.d("begin","3");
-                String url="http://115.29.203.187/app-release.apk";
+                String url="http://download.xingmeng.work/app-release.apk";
                 downloadBinder.startDownload(url);
                 break;
             case R.id.pause_download:

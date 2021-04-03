@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_weight="1"
         android:hint="搜索"
         android:gravity="center_horizontal"
         android:textSize="20sp"
         android:id="@+id/search"
         />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/titles"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:elevation="16dp"
         />
 
     <ListView
-
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="500dp"
         android:id="@+id/content"
         android:layout_weight="7"
-        />
-<include layout="@layout/floatingmenu"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"/>
+        >
+    </ListView>
+    </LinearLayout>
 
-</LinearLayout>
+    <include
+        layout="@layout/floatingmenu"
+        />
+</FrameLayout>

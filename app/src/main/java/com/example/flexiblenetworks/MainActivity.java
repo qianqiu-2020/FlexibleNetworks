@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ImageView imageView;
 
+
     public static class MyCallback implements ComponentCallbacks {
         @Override
         public void onConfigurationChanged(Configuration arg) {
@@ -86,6 +87,10 @@ public class MainActivity extends BaseActivity {
             }
         });
         setContentView(R.layout.activity_main);
+        netThread_udp.setHandler(handler);//
+        listenTread=new Thread(netThread_udp);
+        listenTread.start();//打开侦听UDP套接字
+
         information=(Button)findViewById(R.id.information);
         friendchat=(Button)findViewById(R.id.friendchat);
         location=(Button)findViewById(R.id.location);
