@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlexibleNetworks"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MarketActivity"></activity>
+        <activity android:name=".message"></activity>
+        <activity android:name=".diBianLan" />
+        <activity android:name=".MarketActivity" />
         <activity android:name=".DownLoadActivity" />
         <activity android:name=".common_back_btn" />
         <activity android:name=".registerActivity" />

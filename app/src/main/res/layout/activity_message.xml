@@ -15,7 +15,7 @@
         app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
         app:contentInsetStart="0dp"
-    >
+        >
         <RelativeLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -27,13 +27,13 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="11dp"
                 android:scaleType="centerInside"
-                android:id="@+id/back"
+                android:id="@id/back"
                 android:src="@drawable/mm_title_back" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="在线列表"
+                android:text="消息界面"
                 android:textColor="#ffffff"
                 android:textSize="20sp" />
         </RelativeLayout>
@@ -43,6 +43,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:id="@+id/list_view"/>
+        android:id="@+id/message_list"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="0dp">
+        <include layout="@layout/activity_di_bian_lan"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+    </RelativeLayout>
 
 </LinearLayout>
