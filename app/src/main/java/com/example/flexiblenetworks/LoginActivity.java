@@ -127,6 +127,10 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 String account=accountEdit.getText().toString();
                 String password=passwordEdit.getText().toString();
+
+                Intent intent=new Intent(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),MainActivity.class);
+                startActivity(intent);
+
                 if(account.isEmpty()||password.isEmpty())
                 {
                     Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号或密码为空！",Toast.LENGTH_SHORT).show();

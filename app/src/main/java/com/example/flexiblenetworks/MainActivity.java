@@ -5,19 +5,17 @@ import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -41,6 +39,7 @@ public class MainActivity extends BaseActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ImageView imageView;
+    private DataBase dataBase;
 
     public static class MyCallback implements ComponentCallbacks {
         @Override
@@ -94,6 +93,17 @@ public class MainActivity extends BaseActivity {
         market=(Button)findViewById(R.id.market);
         exit=(Button)findViewById(R.id.exit);
         imageView=(ImageView)findViewById(R.id.imageview);
+
+        //dbHelper = new DBHelper(this,"userDB_"+BaseActivity.user_id+".db",null,1);
+        //SQLiteDatabase dataBase = dbHelper.getWritableDatabase();
+        //dbHelper.add_friend(dataBase,123,"wx",0);
+        //dataBase.close();
+        dataBase = new DataBase(this);
+        dataBase.add_friend(1,"w",0);
+        dataBase.add_chatFile(0,1,"再见1");
+        dataBase.add_chatFile(0,1,"再见1");
+        dataBase.add_chatFile(1,0,"再见0");
+        dataBase.openDataBase();
 
         setSupportActionBar(findViewById(R.id.toolbar));
         navigationView=(NavigationView)findViewById(R.id.nav_view);
