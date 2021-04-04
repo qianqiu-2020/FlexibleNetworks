@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -60,11 +61,21 @@ public class TCP_Sender implements Runnable {
             data.putString("content", reply.getContent());
             message.setData(data);
             handler.sendMessage(message);//发往主线程，会调用本类设置的Handle的handleMessage方法，注意，handle不是baseactivity中的handle，而是重新它的拷贝
-        } catch (SocketTimeoutException e)//连接超时，可能是服务器未开启
+        } catch (ConnectException e)//连接超时，可能是服务器未开启
         {
             /*将信息通过handle从当前子线程发送给主线程*/
             Message message = new Message();
             message.what = 1000;
+            handler.sendMessage(message);//发往主线程，会调用本类设置的Handle的handleMessage方法，注意，handle不是baseactivity中的handle，而是重新它的拷贝
+
+            //Connection reset异常
+            /*一端退出，但退出时并未关闭该连接，另一端如果在从连接中读数据则抛出该异常（Connection reset）。简单的说就是在连接断开后的读和写操作引起的。*/
+            e.printStackTrace();
+        } catch (SocketTimeoutException e)//连接超时，可能是服务器未及时回应
+        {
+            /*将信息通过handle从当前子线程发送给主线程*/
+            Message message = new Message();
+            message.what = 1001;
             handler.sendMessage(message);//发往主线程，会调用本类设置的Handle的handleMessage方法，注意，handle不是baseactivity中的handle，而是重新它的拷贝
 
             //Connection reset异常

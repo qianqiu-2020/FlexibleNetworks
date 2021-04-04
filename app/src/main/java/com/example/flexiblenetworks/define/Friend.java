@@ -1,5 +1,5 @@
 package com.example.flexiblenetworks.define;
-/*好友类，记录好友相关信息
+/*聊天对象类，记录好友相关信息
 * 如昵称，头像等...
 * */
 public class Friend {

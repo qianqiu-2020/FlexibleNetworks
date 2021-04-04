@@ -1,5 +1,7 @@
 package com.example.flexiblenetworks.define;
-
+/*
+* 交易市场内容格式
+* */
 public class content {
     private String name;
     private int imageId;

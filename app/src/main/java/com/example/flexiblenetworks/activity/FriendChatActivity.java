@@ -25,7 +25,7 @@ import java.util.List;
 public class FriendChatActivity extends BaseActivity {
 
   //  private String[] data={"image1","image2","image3","image4","image5","image6","image7","image8","image9","image10","image11","image12","image13"};
-    private List<Friend> FriendList=new ArrayList<>();
+    //转为全局变量private List<Friend> FriendList=new ArrayList<>();
     FriendAdapter adapter;
     ListView listView;
     ImageView imageView;
@@ -44,7 +44,7 @@ public class FriendChatActivity extends BaseActivity {
                 Msg msg=new Msg(Msg.TYPE_GET_ONLINELIST,user_id,mainserverIp,12000,"get user online list");//构造自定义协议内容
                 Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
                 tcp_sender.putMsg(msg);//将要发送内容设置好
-                tcp_sender_tread.notify();//网络子线程开始运行
+                tcp_sender_tread.interrupt();//网络子线程开始运行
 
                 break;
             case R.id.add:
@@ -100,11 +100,11 @@ public class FriendChatActivity extends BaseActivity {
         String content=msg.getData().getString("content");//网络线程传过来的内容
         Log.d("msgProssess_Chat","msg.what（msgtype） "+msg.what+"\nmsg携带的bundle（msgcontent）内容如下\n"+content);
         switch (msg.what){
-            case Msg.TYPE_ONLINE_LIST :{
-                Log.d("msgProssess_Chat","收到在线列表"+content);
-                Friend temp=new Friend(content,R.drawable.image_1);
-                FriendList.add(temp);
-            }
+//            case Msg.TYPE_ONLINE_LIST :{
+//                Log.d("msgProssess_Chat","收到在线列表"+content);
+//                Friend temp=new Friend(content,R.drawable.image_1);
+//                FriendList.add(temp);
+//            }
             case Msg.TYPE_GET_ONLINELIST:{
                 Log.d("msgProssess_Chat","收到申请的在线列表"+content);
                 initFriends();

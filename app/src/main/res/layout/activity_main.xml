@@ -1,210 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <FrameLayout
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/common_top_bar_blue"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"></androidx.appcompat.widget.Toolbar>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/common_top_bar_blue"
-                app:contentInsetEnd="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetRight="0dp"
-                app:contentInsetStart="0dp"></androidx.appcompat.widget.Toolbar>
-
-
-            <ImageView
-                android:id="@+id/imageview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:scaleType="fitXY"
-                android:src="@drawable/mainimage"></ImageView>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/information"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:text="公开平台"></Button>
-
-                    <Button
-                        android:id="@+id/friendchat"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
-                        android:text="好友聊天"></Button>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/market"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:text="交易市场（待开发）"></Button>
-                    <Button
-                        android:id="@+id/location"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:text="定位"></Button>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/update"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        android:text="下载最新版本"></Button>
-
-                </LinearLayout>
-            </LinearLayout>
-
-
-
-            <TextView
-                android:id="@+id/text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="【公告栏】\n欢迎使用本软件！"
-                android:textColor="#2D2F31"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <ListView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:id="@+id/message_list"/>
+            android:layout_height="0dp"
+            android:layout_weight="13">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="0dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
+                android:orientation="vertical">
+
+
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:id="@+id/imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mainimage"></ImageView>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/information"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:text="公开平台"></Button>
+
+                        <Button
+                            android:id="@+id/friendchat"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:text="好友聊天"></Button>
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/market"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:text="交易市场（待开发）"></Button>
+
+                        <Button
+                            android:id="@+id/location"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:text="定位"></Button>
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/update"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="1"
+                            android:text="下载最新版本"></Button>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="【公告栏】\n欢迎使用本软件！"
+                    android:textColor="#2D2F31"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/message_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
                     android:id="@+id/main_interface"
-                    android:layout_weight="1"
-                    android:background="@drawable/main"
-                    android:layout_marginRight="50dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:layout_marginRight="50dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/main" />
+
                 <ImageView
+                    android:id="@+id/message_interface"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/message_interface"
-                    android:layout_weight="1"
-                    android:background="@drawable/message"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="50dp"
                     android:layout_marginBottom="10dp"
-                    />
+                    android:layout_weight="1"
+                    android:background="@drawable/message" />
+
                 <ImageView
+                    android:id="@+id/web"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/web"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/web"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
                     android:onClick="popupMenu"
 
                     />
 
                 <ImageView
+                    android:id="@+id/exit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/exit"
-                    android:layout_weight="1"
-                    android:background="@drawable/out"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="10dp"
-                    />
+                    android:layout_weight="1"
+                    android:background="@drawable/out" />
 
             </LinearLayout>
         </RelativeLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/nav_view"
-        app:menu="@menu/nav_menu"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_hearder">
+        app:headerLayout="@layout/nav_hearder"
+        app:menu="@menu/nav_menu">
 
         <ImageView
+            android:id="@+id/setting"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/nav_setting"
-            android:id="@+id/setting"
-            />
+            android:background="@drawable/nav_setting" />
+
         <ImageView
+            android:id="@+id/about"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="70dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/about"
-            android:id="@+id/about"
-            />
+            android:background="@drawable/about" />
 
 
     </com.google.android.material.navigation.NavigationView>

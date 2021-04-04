@@ -15,7 +15,7 @@ import com.example.flexiblenetworks.define.ActivityCollector;
 import com.example.flexiblenetworks.define.Msg;
 import com.example.flexiblenetworks.R;
 
-public class registerActivity extends BaseActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener{
     private EditText name;
     private EditText passwordEdit;
     private EditText surePassword;
@@ -24,12 +24,13 @@ public class registerActivity extends BaseActivity implements View.OnClickListen
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
 
-    public registerActivity() {
+    public RegisterActivity() {
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
+        tcp_sender.setHandler(handler);
 /*        ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null) actionBar.hide();*/
         Init();
@@ -41,29 +42,32 @@ public class registerActivity extends BaseActivity implements View.OnClickListen
         this.surePassword = (EditText)this.findViewById(R.id.sure_password);
         this.cancel = (Button)this.findViewById(R.id.cancelRegister);
         this.sure = (Button)this.findViewById(R.id.addRegister);
-        this.sure.setOnClickListener(registerActivity.this);
-        this.cancel.setOnClickListener(registerActivity.this);
+        this.sure.setOnClickListener(RegisterActivity.this);
+        this.cancel.setOnClickListener(RegisterActivity.this);
         this.pref= getSharedPreferences("login", Context.MODE_PRIVATE);
     }
 
     public void onClick(View v) {
-        String account=name.getText().toString().trim();
-        String password=passwordEdit.getText().toString();
-        String password2=surePassword.getText().toString();
-        if(account.isEmpty()||password.isEmpty())
-        {
-            Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号或密码为空！",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else if(!password.equals(password2)){
-            Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"两次密码输入不一样！",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        editor=pref.edit();
+        switch (v.getId()){
+            case R.id.addRegister:
+            {
+                String account=name.getText().toString().trim();
+                String password=passwordEdit.getText().toString();
+                String password2=surePassword.getText().toString();
+                if(account.isEmpty()||password.isEmpty())
+                {
+                    Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号或密码为空！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(!password.equals(password2)){
+                    Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"两次密码输入不一样！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                editor=pref.edit();
 
-        editor.clear();
-        editor.apply();
-        Log.d("local","apply，已存入preference");
+                editor.clear();
+                editor.apply();
+                Log.d("local","apply，已存入preference");
 /*                if(autoLogin.isChecked()){
                     editor.putBoolean("auto_login",true);
                 }else {
@@ -71,11 +75,18 @@ public class registerActivity extends BaseActivity implements View.OnClickListen
                 }
                 editor.apply();*/
 
-        /*向服务器发送注册信息*/
-        Msg msg=new Msg(Msg.TYPE_LOGIN_REGISTER,0,mainserverIp,12000,account+"@@"+password);
-        Log.d("msg","消息构造完成");
-        tcp_sender.putMsg(msg);
-        tcp_sender_tread.interrupt();//子线程开始运行
+                /*向服务器发送注册信息*/
+                Msg msg=new Msg(Msg.TYPE_LOGIN_REGISTER,0,mainserverIp,12000,account+"@@"+password);
+                Log.d("msg","消息构造完成");
+                tcp_sender.putMsg(msg);
+                tcp_sender_tread.interrupt();//子线程开始运行
+                break;
+            }
+            case R.id.cancelRegister:
+                finish();
+                break;
+        }
+
     }
 
     @Override

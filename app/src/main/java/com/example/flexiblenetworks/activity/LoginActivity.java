@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.flexiblenetworks.define.ActivityCollector;
 import com.example.flexiblenetworks.define.Msg;
 import com.example.flexiblenetworks.R;
+import com.example.flexiblenetworks.network.NetWorkUtil;
 
 /*此活动为登录与注册，保存密码功能采用preference实现*/
 public class LoginActivity extends BaseActivity {
@@ -36,6 +37,7 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remeberPassword;
     private CheckBox autoLogin;
     private TextView status;
+    private TextView selfstatus;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -56,6 +58,7 @@ public class LoginActivity extends BaseActivity {
         remeberPassword=(CheckBox)findViewById(R.id.remember_pass);
         autoLogin=(CheckBox)findViewById(R.id.auto_login);
         status=(TextView) findViewById(R.id.status);
+        selfstatus=(TextView) findViewById(R.id.selfstatus);
         boolean isRemember=pref.getBoolean("remember_password",false);
         boolean isAutoLogin=pref.getBoolean("auto_login",false);
 
@@ -91,16 +94,23 @@ public class LoginActivity extends BaseActivity {
         /*查询服务器状态*/
         Msg msg=new Msg(Msg.TYPE_SERVER_STATUS,1000,mainserverIp,12000,"isOK?");//构造自定义协议内容
         tcp_sender.putMsg(msg);
-//        tcp_sender_tread.notify();
-//        netThread.setMsg(msg);//将要发送内容设置好
-//        netThread.setHandler(handler);//
-//        new Thread(netThread).start();//网络子线程开始运行
+        tcp_sender_tread.interrupt();
 
+
+        StringBuilder currentPosition=new StringBuilder();
+        currentPosition.append("【您的网络信息】").append("\n");
+        currentPosition.append("网络 ").append(NetWorkUtil.isNetworkAvailable(this)).append("\n");
+        currentPosition.append("GPS ").append(NetWorkUtil.isGpsEnabled(this)).append("\n");
+        currentPosition.append("WIFI ").append(NetWorkUtil.isWifi(this)).append("\n");
+        currentPosition.append("移动网络 ").append(NetWorkUtil.isMobileNetwork(this)).append("\n");
+        currentPosition.append("网络类型 ").append(NetWorkUtil.getNetworkType(this)).append("\n");
+        currentPosition.append("提供商 ").append(NetWorkUtil.getProvider(this)).append("\n");
+        selfstatus.setText(currentPosition);
 
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,registerActivity.class);
+                Intent intent=new Intent(ActivityCollector.activities.get(ActivityCollector.activities.size()-1), RegisterActivity.class);
                 startActivity(intent);
                 /**String account=accountEdit.getText().toString();
                 String password=passwordEdit.getText().toString();
@@ -141,8 +151,6 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),MainActivity.class);
-                startActivity(intent);
 
 
                 String account=accountEdit.getText().toString();
@@ -182,21 +190,34 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        tcp_sender.setHandler(handler);
+    }
+
     /*处理网络线程返回的数据*/
     @Override
     public void processMessage(Message msg) {
         Log.d("pro","登录活动处理消息");
-        if(msg.what==1000)
+        if(msg.what==1000)//连接超时异常，验证服务器状态的失败处理
+        {
+            Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"无法连接服务器！",Toast.LENGTH_LONG).show();
+            status.setText("【服务器配置】\n主服务器IP:"+mainserverIp+"\n状态:不可连接！");
+            return;
+        }
+        if(msg.what==1001)//连接超时异常，验证服务器状态的失败处理
         {
             Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"服务器未响应！",Toast.LENGTH_LONG).show();
+            status.setText("【服务器配置】\n主服务器IP:"+mainserverIp+"\n状态:不可连接！");
             return;
         }
 
 
         String content=msg.getData().getString("content");
-        //String []list;
         int mark;
-        long id=0;
+        long id=0;//临时存储接受到的id
         Log.d("msgProcess_login","msg.what（msgType） "+msg.what+"\nmsg携带的bundle（msgContent）内容如下\n"+content);
 
         /*处理不同情况的返回数据*/
@@ -224,8 +245,9 @@ public class LoginActivity extends BaseActivity {
             case 1113:
                 Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"密码错误",Toast.LENGTH_SHORT).show();
                 break;
-            case 111111:
-                status.setText("服务器在线");
+            case 111111://验证服务器状态的成功处理
+                status.setText("【服务器配置】\n主服务器IP:"+mainserverIp+"\n状态:可连接");
+                break;
             default:
                 Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"未知错误",Toast.LENGTH_SHORT).show();
         }

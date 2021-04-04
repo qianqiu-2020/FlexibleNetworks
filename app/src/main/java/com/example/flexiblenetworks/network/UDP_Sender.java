@@ -65,7 +65,7 @@ public class UDP_Sender implements Runnable {
                 sendUdpData(queue.poll());
             }
             try {
-                Thread.sleep(10000);//为空时休眠，等待唤醒
+                Thread.sleep(100000);//为空时休眠，等待唤醒
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

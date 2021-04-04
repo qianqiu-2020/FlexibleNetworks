@@ -45,6 +45,10 @@ public class MarketActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
+        tcp_sender.setHandler(handler);
+        udp_sender.setHandler(handler);
+        udp_listener.setHandler(handler);
+
         imageView=(ImageView)findViewById(R.id.back);
         init();//初始化标题数据
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.titles);

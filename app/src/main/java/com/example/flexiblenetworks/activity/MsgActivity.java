@@ -116,6 +116,9 @@ public class MsgActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg);//注意指向的布局
+        tcp_sender.setHandler(handler);
+        udp_sender.setHandler(handler);
+        udp_listener.setHandler(handler);
         if (chat_aim.getName().equals("图灵机器人"))
             initMsgs();//初始化消息列表，当前未使用网络线程，故使用本地数据
         else {
@@ -146,7 +149,7 @@ public class MsgActivity extends BaseActivity {
 
 
                     /*新增消息时的操作*/
-                    Msg msg = new Msg(Msg.TYPE_SENT, user_id, mainserverIp,12000,content);
+                    Msg msg = new Msg(Msg.TYPE_SENT, user_id, chat_aim.getIp(),11000,content);
                     msgList.add(msg);//添加消息到消息列表
                     Log.d("mark", content);
                     adapter.notifyItemInserted(msgList.size() - 1);//更新适配器，通知适配器消息列表有新的数据插入
@@ -157,33 +160,35 @@ public class MsgActivity extends BaseActivity {
                     if (chat_aim.getName().equals("图灵机器人"))//向图灵服务器发送数据
                         sendData(content);
                     else {//好友消息
+                        udp_sender.putMsg(msg);
+                        udp_sender_tread.interrupt();
 
                         /*私聊情况一：对方在线，通过服务器获取到对方直接发送消息(不经过服务器)*/
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    String ip = chat_aim.getIp();
-                                    int port = 11000;
-
-                                    /*UDP发送消息*/
-                                    // 创建发送端Socket, 绑定本机IP地址, 绑定任意一个未使用的端口号
-                                    DatagramSocket socket = new DatagramSocket();
-                                    // 创建发送端Packet, 指定数据, 长度, 地址, 端口号
-                                    String temp = msg.getType() + "\r\n" + msg.getsender_id() + "\r\n" + msg.getContent();
-                                    DatagramPacket packet = new DatagramPacket(temp.getBytes("UTF-8"), temp.getBytes().length, InetAddress.getByName(ip), port);
-                                    // 使用Socket发送Packet
-                                    socket.send(packet);
-                                    // 关闭Socket
-                                    socket.close();
-                                    Log.d("mark", "发送UDP流为" + temp);
-                                } catch (SocketException | UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try {
+//                                    String ip = chat_aim.getIp();
+//                                    int port = 11000;
+//
+//                                    /*UDP发送消息*/
+//                                    // 创建发送端Socket, 绑定本机IP地址, 绑定任意一个未使用的端口号
+//                                    DatagramSocket socket = new DatagramSocket();
+//                                    // 创建发送端Packet, 指定数据, 长度, 地址, 端口号
+//                                    String temp = msg.getType() + "\r\n" + msg.getsender_id() + "\r\n" + msg.getContent();
+//                                    DatagramPacket packet = new DatagramPacket(temp.getBytes("UTF-8"), temp.getBytes().length, InetAddress.getByName(ip), port);
+//                                    // 使用Socket发送Packet
+//                                    socket.send(packet);
+//                                    // 关闭Socket
+//                                    socket.close();
+//                                    Log.d("mark", "发送UDP流为" + temp);
+//                                } catch (SocketException | UnsupportedEncodingException e) {
+//                                    e.printStackTrace();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).start();
                     }
                     //netThread_udp.sendUdpData(msg, chat_aim.getIp(), 11000);
                     /*私聊情况二：对方不在线，发送给服务器暂存*/
@@ -268,7 +273,6 @@ public class MsgActivity extends BaseActivity {
     /*收到消息在这里处理*/
     @Override
     public void processMessage(Message msg) {
-        //Log.d("mark显示接收消息内容1", (String) msg.obj);
         switch (msg.what) {
             case Msg.TYPE_TULING_OK:
                 if (msg.obj != null) {
@@ -283,7 +287,18 @@ public class MsgActivity extends BaseActivity {
                     showData(content);
                 break;
 
-
+        /*
+        * 收到消息时分为两种情况
+        * 一，处于聊天界面，直接显示到聊天框中，并存入数据库，标记为已读
+        * 二，处于其他界面，查询未读消息数据库里的总览表(记录来自不同id的未读消息数)，
+        * 如果不存在，则创建一条记录，如果存在，则数量+1，未读数量记为n
+        * 并存未读消息到与id相同的聊天记录数据库表中的最下面，之后点进详情时，自动从聊天记录数据库对应id的表中最下面
+        * 倒着读n条消息，并标记为已读。
+        *
+        * 三，如果发送消息时不在线，由服务端代存，客户端在登录时向服务端查询，有则获取到本地数据库，
+        * 然后按照第二种情况执行
+        *
+        * */
         }
     }
 

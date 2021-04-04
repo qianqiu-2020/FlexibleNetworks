@@ -27,11 +27,11 @@ public class UDP_Listener implements Runnable {
         try {
             // 创建接收端Socket, 绑定本机IP地址, 绑定指定端口
             DatagramSocket socket = new DatagramSocket(port);
-            Log.d("mark", socket.getLocalSocketAddress()+"监听UDP端口"+port+"ing...");
+
             // 创建接收端Packet, 用来接收数据
             DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
             while (onWork) {
-                Log.d("mark", socket.getInetAddress()+"监听UDP端口"+port+"ing...");
+                Log.d("udp", "监听UDP"+socket.getLocalAddress()+socket.getPort());
                 // 用Socket接收Packet, 未收到数据时会阻塞
                 socket.receive(packet);
                 // 从Packet中获取数据
@@ -39,7 +39,7 @@ public class UDP_Listener implements Runnable {
                 int len = packet.getLength();
                 String result = new String(temp, 0, len, "UTF-8");
                 Msg reply = new Msg(result);//解析消息
-                Log.d("udp","返回流\n来自"+socket.getRemoteSocketAddress()+"\n发送者id "+String.valueOf(msg.getsender_id())+"\n消息类型 "+String.valueOf(reply.getType())+"\ncontent "+reply.getContent());
+                Log.d("udp","返回流\n来自"+socket.getRemoteSocketAddress()+"\n发送者id "+String.valueOf(reply.getsender_id())+"\n消息类型 "+String.valueOf(reply.getType())+"\ncontent "+reply.getContent());
 
                 /*将信息通过handle从当前子线程发送给主线程*/
                 Message message=new Message();
