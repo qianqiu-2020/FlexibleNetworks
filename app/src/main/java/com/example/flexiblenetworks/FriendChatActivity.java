@@ -89,12 +89,7 @@ public class FriendChatActivity extends BaseActivity {
             }
         });//每一项被点击时执行的操作
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //this.finish();
-            }
-        });
+
     }
     /*此活动需要处理的网络消息为好友列表，当网络线程获取到数据时，会调用此方法*/
     @Override

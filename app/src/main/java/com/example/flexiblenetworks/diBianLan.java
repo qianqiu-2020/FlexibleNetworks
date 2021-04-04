@@ -27,8 +27,7 @@ public class diBianLan extends AppCompatActivity {
         message_interface.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(diBianLan.this,message.class);
-                startActivity(intent);
+                setContentView(R.layout.activity_message);
             }
         });
     }

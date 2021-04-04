@@ -12,16 +12,20 @@ import android.os.Message;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -34,13 +38,17 @@ public class MainActivity extends BaseActivity {
     private Button friendchat;
     private Button location;
     private Button update;
-    private Button exit;
+    private ImageView exit;
     private Button market;
     private TextView broad;
-    private String broadcast;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ImageView imageView;
+    private ImageView main_interface;
+    private ImageView message_interface;
+    private ListView message_list;
+    private ImageView web;
+    private ImageView setting;
 
 
     public static class MyCallback implements ComponentCallbacks {
@@ -59,6 +67,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         MyCallback callBacks =new MyCallback();
         this.registerComponentCallbacks( callBacks );
         this.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
@@ -93,14 +103,21 @@ public class MainActivity extends BaseActivity {
 
         information=(Button)findViewById(R.id.information);
         friendchat=(Button)findViewById(R.id.friendchat);
-        location=(Button)findViewById(R.id.location);
+        location=(Button) findViewById(R.id.location);
         broad=(TextView)findViewById(R.id.text_view);
         update=(Button)findViewById(R.id.update);
         market=(Button)findViewById(R.id.market);
-        exit=(Button)findViewById(R.id.exit);
+        exit=(ImageView)findViewById(R.id.exit);
         imageView=(ImageView)findViewById(R.id.imageview);
 
+        main_interface=(ImageView) findViewById(R.id.main_interface);
+        message_interface=(ImageView) findViewById(R.id.message_interface);
+        web=(ImageView)findViewById(R.id.web);
+        message_list=(ListView)findViewById(R.id.message_list);
+        message_list.setVisibility(View.INVISIBLE);
+
         setSupportActionBar(findViewById(R.id.toolbar));
+        setting=(ImageView)findViewById(R.id.setting) ;
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBar actionBar=getSupportActionBar();
@@ -115,6 +132,12 @@ public class MainActivity extends BaseActivity {
                 //可以在这里设置逻辑，这里只是用nav_call做一个示范
                 drawerLayout.closeDrawers();
                 return true;
+            }
+        });
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "设置", Toast.LENGTH_SHORT).show();
             }
         });
         market.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +174,7 @@ public class MainActivity extends BaseActivity {
         location.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,LBSActivity.class);//打开定位模块
+                Intent intent=new Intent(MainActivity.this, LBSActivity.class);//打开聊天模块
                 startActivity(intent);
                 //finish();主活动一直存在不销毁
             }
@@ -178,6 +201,66 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);//打开官网
             }
         });
+
+        main_interface.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                message_list.setVisibility(View.INVISIBLE);
+                location.setVisibility(View.VISIBLE);
+
+                information.setVisibility(View.VISIBLE);
+                friendchat.setVisibility(View.VISIBLE);
+                location.setVisibility(View.VISIBLE);
+                update.setVisibility(View.VISIBLE);
+                exit.setVisibility(View.VISIBLE);
+                market.setVisibility(View.VISIBLE);
+                broad.setVisibility(View.VISIBLE);
+                web.setVisibility(View.VISIBLE);
+                imageView.setVisibility(View.VISIBLE);
+                Log.d("ssss","1111111");
+            }
+        });
+        message_interface.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d("ssss","111111222221");
+                  information.setVisibility(View.INVISIBLE);
+                  friendchat.setVisibility(View.INVISIBLE);
+                  location.setVisibility(View.INVISIBLE);
+                  update.setVisibility(View.INVISIBLE);
+                  exit.setVisibility(View.VISIBLE);
+                  market.setVisibility(View.INVISIBLE);
+                  broad.setVisibility(View.INVISIBLE);
+                  imageView.setVisibility(View.INVISIBLE);
+                  web.setVisibility(View.VISIBLE);
+                message_list.setVisibility(View.VISIBLE);
+                message_interface.setVisibility(View.VISIBLE);
+                main_interface.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+    public void popupMenu(View v){
+        PopupMenu popupMenu=new PopupMenu(MainActivity.this,v);
+        MenuInflater menuInflater=popupMenu.getMenuInflater();
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.popup_add:
+                    Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.popup_delete:
+                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.popup_more:
+                    Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        menuInflater.inflate(R.menu.web_menu,popupMenu.getMenu());
+        popupMenu.show();
     }
     /*处理网络线程返回的信息，当前为处理公告栏内容*/
     @Override

@@ -125,6 +125,10 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),MainActivity.class);
+                startActivity(intent);
+
+
                 String account=accountEdit.getText().toString();
                 String password=passwordEdit.getText().toString();
                 if(account.isEmpty()||password.isEmpty())

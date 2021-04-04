@@ -3,6 +3,7 @@ package com.example.flexiblenetworks;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +41,7 @@ public class MsgActivity extends BaseActivity {
     /*接入图灵机器人*/
     private static final String WEB_SITE = "http://openapi.tuling123.com/openapi/api/v2";//接口地址
     private static final String KEY = "2bf269c26b324fc8bcf8d2b332313182";//apikey
+    private SwipeRefreshLayout swipeRefreshLayout;
     /*    class MHandler extends Handler{
             @Override
             public void dispatchMessage(Message msg){
@@ -198,8 +200,36 @@ public class MsgActivity extends BaseActivity {
 
             }
         });
+        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.btn_blue_normal);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
     }
-
+    private void refresh(){
+        //本地刷新测试
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(2000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMsgs();
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
+    }
     private void sendData(String content) {//content已不为空
         OkHttpClient okHttpClient = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");//数据类型为json格式，

@@ -11,12 +11,11 @@
         android:layout_height="match_parent"
         >
 
-
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:orientation="vertical">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -25,8 +24,8 @@
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
-                app:contentInsetStart="0dp"
-                ></androidx.appcompat.widget.Toolbar>
+                app:contentInsetStart="0dp"></androidx.appcompat.widget.Toolbar>
+
 
             <ImageView
                 android:id="@+id/imageview"
@@ -35,109 +34,148 @@
                 android:background="#FFFFFF"
                 android:scaleType="fitXY"
                 android:src="@drawable/mainimage"></ImageView>
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    >
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/information"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_marginRight="5dp"
-                        android:text="公开平台">
-                    </Button>
+                        android:layout_weight="1"
+                        android:text="公开平台"></Button>
+
                     <Button
                         android:id="@+id/friendchat"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_marginLeft="5dp"
-                        android:text="好友聊天">
-                    </Button>
+                        android:layout_weight="1"
+                        android:text="好友聊天"></Button>
                 </LinearLayout>
+
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    >
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/market"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_marginRight="5dp"
-                        android:text="交易市场（待开发）">
-                    </Button>
+                        android:layout_weight="1"
+                        android:text="交易市场（待开发）"></Button>
                     <Button
                         android:id="@+id/location"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:layout_marginLeft="5dp"
-                        android:text="人群分布信息（待开发）">
-                    </Button>
+                        android:text="定位"></Button>
                 </LinearLayout>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    >
+                    android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/update"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:text="下载最新版本">
-                    </Button>
-                    <Button
-                        android:id="@+id/exit"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="5dp"
-                        android:text="退出登录">
-                    </Button>
+                        android:text="下载最新版本"></Button>
+
                 </LinearLayout>
             </LinearLayout>
-            <TextView
-                android:id="@+id/text_view2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="当前版本v0.11"
-                android:textColor="#00BCD4"
-                android:textSize="15sp" />
+
+
+
             <TextView
                 android:id="@+id/text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="#2D2F31"
                 android:text="【公告栏】\n欢迎使用本软件！"
-                />
+                android:textColor="#2D2F31"
+                android:textSize="18sp" />
         </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:id="@+id/message_list"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="0dp">
-            <include layout="@layout/activity_di_bian_lan"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/main_interface"
+                    android:layout_weight="1"
+                    android:background="@drawable/main"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/message_interface"
+                    android:layout_weight="1"
+                    android:background="@drawable/message"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginBottom="10dp"
+                    />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/web"
+                    android:layout_weight="1"
+                    android:background="@drawable/web"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="popupMenu"
+
+                    />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/exit"
+                    android:layout_weight="1"
+                    android:background="@drawable/out"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+            </LinearLayout>
         </RelativeLayout>
     </FrameLayout>
 
@@ -147,7 +185,29 @@
         android:id="@+id/nav_view"
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_hearder"/>
+        app:headerLayout="@layout/nav_hearder">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/nav_setting"
+            android:id="@+id/setting"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="70dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/about"
+            android:id="@+id/about"
+            />
+
+
+    </com.google.android.material.navigation.NavigationView>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
