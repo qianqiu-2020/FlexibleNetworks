@@ -156,5 +156,9 @@
             android:text="忘记密码">
         </Button>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"></TextView>
 
 </LinearLayout>

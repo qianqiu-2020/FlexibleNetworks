@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="40dp"
+        android:layout_weight="0.5"
         android:background="@color/common_top_bar_blue">
         <ImageView
             android:layout_width="wrap_content"
@@ -26,16 +31,17 @@
     </RelativeLayout>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
         android:hint="搜索"
         android:gravity="center_horizontal"
         android:textSize="20sp"
         android:id="@+id/search"
+        android:layout_weight="1"
         />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/titles"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="30dp"
         android:layout_weight="0.5"
         />
 
@@ -44,11 +50,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/content"
-        android:layout_weight="7"
+        android:layout_weight="20"
         />
-<include layout="@layout/floatingmenu"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"/>
 
-</LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/floatingmenu"
+        />
+</FrameLayout>

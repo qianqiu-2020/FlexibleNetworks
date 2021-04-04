@@ -6,7 +6,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
-    <com.example.flexiblenetworks.FloatingDraftButton
+    <com.example.flexiblenetworks.widget.FloatingDraftButton
         android:id="@+id/floatingActionButton"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
