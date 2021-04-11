@@ -80,47 +80,15 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 
-        MyCallback callBacks = new MyCallback();
-        this.registerComponentCallbacks(callBacks);
-        this.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            }
 
-            @Override
-            public void onActivityStarted(Activity activity) {
-                //sActivity = activity; //可以获取到栈顶对象
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                Log.d("销毁", "main");
-            }
-        });
         setContentView(R.layout.activity_main);
         /*集中创建网络线程*/
         tcp_sender.setHandler(handler);
-        udp_sender.setHandler(handler);
-        udp_listener.setHandler(handler);
+        udp_sender.setHandler(handler2);
+        udp_listener.setHandler(handler2);
         udp_sender_tread = new Thread(udp_sender);//发送udp消息
         udp_listener_tread = new Thread(udp_listener);//接收udp消息
-
+//
         udp_sender_tread.start();
         udp_listener_tread.start();
 
@@ -172,10 +140,11 @@ public class MainActivity extends BaseActivity {
         });
 
         /*主动向服务器发送获取公告信息*/
-        Msg msg = new Msg(Msg.TYPE_SEND_BROADCAST, user_id, mainserverIp, 12000, "broadcast");
+        Log.d("ttt1",String.valueOf(tcp_sender_tread.isAlive()));
+        Msg msg = new Msg(mainserverIp,mainserverPort,Msg.TYPE_BROADCAST, user_id, mainserverId, "broadcast");
         Log.d("msg", "消息构造完成");
         tcp_sender.putMsg(msg);
-        tcp_sender_tread.interrupt();
+        //tcp_sender_tread.interrupt();
 
 //        netThread.setMsg(msg);
 //        netThread.setHandler(handler);
@@ -326,11 +295,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void processMessage(Message msg) {
         Log.d("pro", "主活动处理消息");
-
+        Log.d("ttt2",String.valueOf(tcp_sender_tread.isAlive()));
         String content = msg.getData().getString("content");
         Log.d("msgProssess_Main", "msg.what（msgtype） " + msg.what + "\nmsg携带的bundle（msgcontent）内容如下\n" + content);
         switch (msg.what) {
-            case Msg.TYPE_RECEIVE_BROADCAST: {
+            case Msg.TYPE_BROADCAST: {
                 broad.setText("[公告栏]\n" + content);
                 break;
             }
@@ -367,19 +336,26 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        tcp_sender.setHandler(handler);
-        udp_sender.setHandler(handler);
-        udp_listener.setHandler(handler);
+//        tcp_sender.setHandler(handler);
+//        udp_sender.setHandler(handler);
+//        udp_listener.setHandler(handler);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("ttt2.2",String.valueOf(tcp_sender_tread.isAlive()));
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d("销毁", "main");
         /*向服务器发送退出登录信息*/
-        Msg msg = new Msg(Msg.TYPE_QUIT, user_id, mainserverIp, 12000, "quit");
+        Msg msg = new Msg(mainserverIp,mainserverPort,Msg.TYPE_QUIT, user_id, mainserverId, "quit");
         Log.d("msg", "消息构造完成");
         udp_sender.putMsg(msg);
-        udp_sender_tread.interrupt();
+        //udp_sender_tread.interrupt();
 
 
 //        Msg msg=new Msg(Msg.TYPE_QUIT,user_id,"quit");

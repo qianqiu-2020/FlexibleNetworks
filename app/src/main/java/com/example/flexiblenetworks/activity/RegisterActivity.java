@@ -30,7 +30,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register);
-        tcp_sender.setHandler(handler);
+        //tcp_sender.setHandler(handler);
 /*        ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null) actionBar.hide();*/
         Init();
@@ -76,10 +76,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 editor.apply();*/
 
                 /*向服务器发送注册信息*/
-                Msg msg=new Msg(Msg.TYPE_LOGIN_REGISTER,0,mainserverIp,12000,account+"@@"+password);
+                Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_REGISTER,100,mainserverId,account+"@@"+password);
                 Log.d("msg","消息构造完成");
                 tcp_sender.putMsg(msg);
-                tcp_sender_tread.interrupt();//子线程开始运行
+                //tcp_sender_tread.interrupt();//子线程开始运行
                 break;
             }
             case R.id.cancelRegister:

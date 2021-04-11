@@ -27,8 +27,11 @@ import java.util.Queue;
 */
 public abstract class BaseActivity extends AppCompatActivity {
     protected static long user_id;//生存期为应用存在全程，记录客户端登录的账号id，在登录时从服务端获取
+
     protected static Friend chat_aim;//聊天目的方
-    protected static String mainserverIp="119.45.115.128";//聊天目的方
+    protected static String mainserverIp="192.168.137.1";//服务器ip
+    protected static int mainserverPort=12000;//服务器port
+    protected static int mainserverId=102;//服务器id
     protected static int mark=1;//客户端位置信息向服务端发送次数，在LBSactivity（定位活动）中被使用
     //protected static List<String> online_list=new ArrayList<>();//客户端维护的在线列表，从主服务器获取
     protected static  List<Friend> FriendList=new ArrayList<>();//客户端维护的在线列表，从主服务器获取
@@ -68,12 +71,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
     };
-//    protected Handler handler2=new Handler(){
-//        public void handleMessage(Message msg){
-//            switch (msg.what){
-//                default:
-//                    processMessage(msg);//处理消息的方式由子类定义，如何确定哪个活动处理？
-//            }
-//        }
-//    };
+    protected Handler handler2=new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                default:
+                    processMessage(msg);//处理消息的方式由子类定义，如何确定哪个活动处理？
+            }
+        }
+    };
 }

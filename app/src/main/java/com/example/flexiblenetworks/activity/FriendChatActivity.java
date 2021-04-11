@@ -41,7 +41,7 @@ public class FriendChatActivity extends BaseActivity {
             case R.id.update:
                 Toast.makeText(this,"刷新好友列表",Toast.LENGTH_SHORT).show();
                 /*向服务器发送申请列表*/
-                Msg msg=new Msg(Msg.TYPE_GET_ONLINELIST,user_id,mainserverIp,12000,"get user online list");//构造自定义协议内容
+                Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_ONLINELIST,user_id,mainserverId,"get user online list");//构造自定义协议内容
                 Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
                 tcp_sender.putMsg(msg);//将要发送内容设置好
                 tcp_sender_tread.interrupt();//网络子线程开始运行
@@ -61,19 +61,22 @@ public class FriendChatActivity extends BaseActivity {
     /*活动创建时先加载一次在线列表*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ttt3",String.valueOf(tcp_sender_tread.isAlive()));
         super.onCreate(savedInstanceState);
+        Log.d("ttt4",String.valueOf(tcp_sender_tread.isAlive()));
         setContentView(R.layout.activity_friendchat);
         imageView=(ImageView)findViewById(R.id.back);
         setSupportActionBar(findViewById(R.id.toolbar));//如果不这样，菜单则不会显示，但注意此时如果toolbar中没有现在的新布局，则会显示androidmanifrst中的应用名/活动中的label
 /*        ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null) actionBar.hide();*/
 
+
         tcp_sender.setHandler(handler);//根据不同活动中设置，可以使网络线程发送到不同活动中。
         /*向服务器发送申请，获取在线列表*/
-        Msg msg=new Msg(Msg.TYPE_GET_ONLINELIST,user_id,mainserverIp,12000,"get user online list");//构造自定义协议内容
+        Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_ONLINELIST,user_id,mainserverId,"get user online list");//构造自定义协议内容
         Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
         tcp_sender.putMsg(msg);//将要发送内容设置好
-        tcp_sender_tread.interrupt();//网络子线程开始运行
+        //tcp_sender_tread.interrupt();//网络子线程开始运行
 
 
         adapter=new FriendAdapter(FriendChatActivity.this,R.layout.friend_item ,FriendList);//实例化适配器
@@ -105,7 +108,7 @@ public class FriendChatActivity extends BaseActivity {
 //                Friend temp=new Friend(content,R.drawable.image_1);
 //                FriendList.add(temp);
 //            }
-            case Msg.TYPE_GET_ONLINELIST:{
+            case Msg.TYPE_ONLINELIST:{
                 Log.d("msgProssess_Chat","收到申请的在线列表"+content);
                 initFriends();
                 List<Friend> tempfriendlist=new ArrayList<>();

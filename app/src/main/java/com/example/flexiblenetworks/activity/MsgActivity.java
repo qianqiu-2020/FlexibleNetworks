@@ -66,8 +66,6 @@ public class MsgActivity extends BaseActivity {
             JSONObject intent = obj.getJSONObject("intent");
             int code = intent.getInt("code");
             JSONArray results = obj.getJSONArray("results");
-            Log.d("mark显示接收消息内容21", String.valueOf(results.length()));
-
             for (int i = 0; i < results.length(); i++) {
                 String content = "";
                 JSONObject result = results.getJSONObject(i);
@@ -99,7 +97,7 @@ public class MsgActivity extends BaseActivity {
 
     private void showData(String content) {
         /*新增消息时的操作*/
-        Msg msg = new Msg(Msg.TYPE_RECEIVERD, 0,mainserverIp,12000, content);
+        Msg msg = new Msg("",0,Msg.TYPE_RECEIVERD, 0,user_id, content);
         msgList.add(msg);//添加消息到消息列表
         Log.d("mark显示接收消息内容3", content);
         adapter.notifyItemInserted(msgList.size() - 1);//更新适配器，通知适配器消息列表有新的数据插入
@@ -149,7 +147,7 @@ public class MsgActivity extends BaseActivity {
 
 
                     /*新增消息时的操作*/
-                    Msg msg = new Msg(Msg.TYPE_SENT, user_id, chat_aim.getIp(),11000,content);
+                    Msg msg = new Msg(chat_aim.getIp(),0,Msg.TYPE_SENT, user_id, 0,content);
                     msgList.add(msg);//添加消息到消息列表
                     Log.d("mark", content);
                     adapter.notifyItemInserted(msgList.size() - 1);//更新适配器，通知适配器消息列表有新的数据插入
@@ -304,20 +302,20 @@ public class MsgActivity extends BaseActivity {
 
     /*初始化消息列表，后续可改写为处理未读消息*/
     private void initMsgs() {
-        Msg msg1 = new Msg(Msg.TYPE_RECEIVERD, 0,mainserverIp,12000, "这里是图灵机器人，来找我聊天吧！");
+        Msg msg1 = new Msg("",11000,Msg.TYPE_RECEIVERD, 103,user_id, "这里是图灵机器人，来找我聊天吧！");
         msgList.add(msg1);
-        Msg msg2 = new Msg(Msg.TYPE_RECEIVERD, 0,mainserverIp,12000, "可以让我讲笑话，脑筋急转弯，玩成语接龙，新闻资讯，星座运势，歇后语，绕口令，顺口溜，天气查询，菜谱大全，快递查询，列车查询，日期查询，城市邮编等等....");
+        Msg msg2 = new Msg("",11000,Msg.TYPE_RECEIVERD, 103,user_id,"可以让我讲笑话，脑筋急转弯，玩成语接龙，新闻资讯，星座运势，歇后语，绕口令，顺口溜，天气查询，菜谱大全，快递查询，列车查询，日期查询，城市邮编等等....");
         msgList.add(msg2);
 /*        Msg msg3=new Msg(Msg.TYPE_RECEIVERD,0,"This is Tom.Nice talking to you.");
         msgList.add(msg3);*/
     }
 
     private void tempinitMsgs() {
-        Msg msg1 = new Msg(Msg.TYPE_RECEIVERD, 0,mainserverIp,12000, "暂时无法和好友聊天哦~");
+        Msg msg1 = new Msg("",11000,Msg.TYPE_RECEIVERD, 103,user_id,"暂时无法和好友聊天哦~");
         msgList.add(msg1);
-        Msg msg2 = new Msg(Msg.TYPE_RECEIVERD, 0,mainserverIp,12000, "去试试和图灵机器人聊天吧！");
+        Msg msg2 = new Msg("",11000,Msg.TYPE_RECEIVERD, 103,user_id,"去试试和图灵机器人聊天吧！");
         msgList.add(msg2);
-        Msg msg3 = new Msg(Msg.TYPE_SENT, 0,mainserverIp,12000, "好的-.-");
+        Msg msg3 = new Msg("",11000,Msg.TYPE_SENT, 103,user_id,"好的-.-");
         msgList.add(msg3);
     }
 

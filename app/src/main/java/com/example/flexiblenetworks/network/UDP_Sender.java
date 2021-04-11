@@ -31,6 +31,7 @@ public class UDP_Sender implements Runnable {
 
 
 
+
     /*发送UDP数据报，线程运行时也可调用NetThread_UDP中的其他方法*/
     //udp传输：
     /**步骤：---
@@ -63,6 +64,7 @@ public class UDP_Sender implements Runnable {
         while(onWork) {
             while (!queue.isEmpty()) {
                 sendUdpData(queue.poll());
+
             }
             try {
                 Thread.sleep(100000);//为空时休眠，等待唤醒

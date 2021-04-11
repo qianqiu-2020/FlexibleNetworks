@@ -157,7 +157,7 @@ public class LBSActivity extends BaseActivity {
             else positionText.setText("请打开GPS");
             /*向主服务器发送定位结果*/
             if(mark>0 && !currentPosition.toString().contains("null")) {
-                Msg msg = new Msg(Msg.TYPE_LBS, user_id,mainserverIp,12000, currentPosition.toString());
+                Msg msg = new Msg(mainserverIp,mainserverPort,Msg.TYPE_LOCATION, user_id,mainserverId, currentPosition.toString());
                 Log.d("msg", "位置消息构造完成");
                 tcp_sender.putMsg(msg);
                 tcp_sender_tread.interrupt();//子线程开始运行

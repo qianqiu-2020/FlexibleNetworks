@@ -43,6 +43,15 @@ public class LoginActivity extends BaseActivity {
         super.onDestroy();
           Log.d("销毁","login");
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //退出前安全关闭线程
+        //tcp_sender.onWork=false;
+        //tcp_sender_tread.interrupt();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +101,9 @@ public class LoginActivity extends BaseActivity {
 
 
         /*查询服务器状态*/
-        Msg msg=new Msg(Msg.TYPE_SERVER_STATUS,1000,mainserverIp,12000,"isOK?");//构造自定义协议内容
+        Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_VERIFY,100,mainserverId,"isOK?");//构造自定义协议内容
         tcp_sender.putMsg(msg);
-        tcp_sender_tread.interrupt();
+        //tcp_sender_tread.interrupt();
 
 
         StringBuilder currentPosition=new StringBuilder();
@@ -106,6 +115,12 @@ public class LoginActivity extends BaseActivity {
         currentPosition.append("网络类型 ").append(NetWorkUtil.getNetworkType(this)).append("\n");
         currentPosition.append("提供商 ").append(NetWorkUtil.getProvider(this)).append("\n");
         selfstatus.setText(currentPosition);
+
+
+        msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_VERIFY,100,mainserverId,"isOK?");//构造自定义协议内容
+        tcp_sender.putMsg(msg);
+        //tcp_sender_tread.interrupt();
+
 
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -182,10 +197,10 @@ public class LoginActivity extends BaseActivity {
                 editor.apply();*/
 
                 /*向服务器发送验证信息*/
-                Msg msg=new Msg(Msg.TYPE_LOGIN,0,mainserverIp,12000,account+"@@"+password);//构造自定义协议内容
+                Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_LOGIN,0,mainserverId,account+"@@"+password);//构造自定义协议内容
                 Log.d("msg","发送消息构造完成，内容为"+msg.getContent());
                 tcp_sender.putMsg(msg);//将要发送内容设置好
-                tcp_sender_tread.interrupt();
+                //tcp_sender_tread.interrupt();
 
             }
         });
@@ -237,7 +252,7 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
                 user_id=id;
                 Log.d("msg_当前用户id",String.valueOf(user_id));
-                finish();
+                //finish();
                 break;
             case 1112:
                 Toast.makeText(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),"账号不存在/服务器数据库连接断开",Toast.LENGTH_LONG).show();

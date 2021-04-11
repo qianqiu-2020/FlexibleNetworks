@@ -18,14 +18,17 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 /*网络线程类。Socket默认是使用了TCP三次握手建立连接*/
 //Socket 是对 TCP/IP 协议的封装，Socket 只是个接口不是协议，通过 Socket 我们才能使用 TCP/IP 协议
 public class TCP_Sender implements Runnable {
     public boolean onWork = true;    //线程工作标识
     static Handler handler;
+    //BlockingQueue<Msg> queue = new BlockingQueue<Msg>();//发送队列
     Queue<Msg> queue = new LinkedList<Msg>();//发送队列
-
+    //注意，需要先添加消息到队列中再打断线程睡眠状态，不要打断睡眠后再添加消息到队列，可能会引发queue
+    //不安全，queue需要互斥访问！
     public void putMsg(Msg msg) {
         queue.offer(msg);
     }
@@ -36,7 +39,7 @@ public class TCP_Sender implements Runnable {
 
     public void sendTcpData(Msg msg) {
         try {
-            Log.d("tcp", "输出流\n" + "目的IP" + msg.getIp() + " 端口" + String.valueOf(msg.getPort()) + "\n发送id " + String.valueOf(msg.getsender_id()) + "\n消息类型 " + String.valueOf(msg.getType()) + "\ncontent " + msg.getContent());
+            Log.d("tcp", "输出流\n" + "目的IP" + msg.getIp() + " 端口" + String.valueOf(msg.getPort()) + "\n发送id " + String.valueOf(msg.getsender_id()) +  "\n接收id " + String.valueOf(msg.getReceiver_id()) + "\n发送时间 " + msg.getTime()+"\n消息类型 " + String.valueOf(msg.getType()) + "\ncontent " + msg.getContent());
             /*TCP建立连接*/
             Socket client;//客户端，与服务端套接字不同
             client = new Socket();
@@ -44,14 +47,14 @@ public class TCP_Sender implements Runnable {
             /*TCP发送消息*/
             OutputStream outToServer = client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
-            String temp = msg.getType() + "\r\n" + msg.getsender_id() + "\r\n" + msg.getContent();//将自定义协议封装为String类型用于传输，接收方可以再解析并重新构造出Msg类型
+            String temp = msg.getType() + "\r\n" + msg.getsender_id() +"\r\n" +msg.getReceiver_id()+"\r\n" +msg.getTime()+ "\r\n" + msg.getContent();//将自定义协议封装为String类型用于传输，接收方可以再解析并重新构造出Msg类型
             out.writeUTF(temp);//发送信息
             /*TCP接收消息*/
             InputStream inFromServer = client.getInputStream();
             DataInputStream in = new DataInputStream(inFromServer);
             String result = in.readUTF();//此处会阻塞，直到收到数据，接收验证结果
             Msg reply = new Msg(result);//从String类型解析出Msg类型
-            Log.d("tcp", "返回流\n来自" + client.getRemoteSocketAddress() + "\n发送者id " + String.valueOf(msg.getsender_id()) + "\n消息类型 " + String.valueOf(reply.getType()) + "\ncontent " + reply.getContent());
+            Log.d("tcp", "返回流\n来自" + client.getRemoteSocketAddress() + "\n发送者id " + String.valueOf(reply.getsender_id()) +"\n接收id " + String.valueOf(reply.getReceiver_id()) + "\n发送时间 " + reply.getTime()+ "\n消息类型 " + String.valueOf(reply.getType()) + "\ncontent " + reply.getContent());
             client.close();//断开TCP连接
             /*将信息通过handler从当前子线程发送给主线程*/
             Message message = new Message();
@@ -91,14 +94,16 @@ public class TCP_Sender implements Runnable {
     @Override
     public void run() {
         while (onWork) {
+          //  try {
             while (!queue.isEmpty()) {
                 sendTcpData(queue.poll());
             }
-            try {
-                Thread.sleep(1000000);//为空时休眠，等待唤醒
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Log.d("test",String.valueOf(queue.isEmpty()));
+//                //Thread.sleep(10);//为空时休眠，等待唤醒,节省资源
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//                continue;
+//            }
         }
     }
 }
