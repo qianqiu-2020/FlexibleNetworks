@@ -7,6 +7,7 @@ import android.os.Message;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.flexiblenetworks.database.DataBase;
 import com.example.flexiblenetworks.define.ActivityCollector;
 import com.example.flexiblenetworks.define.Friend;
 import com.example.flexiblenetworks.define.Msg;
@@ -27,7 +28,7 @@ import java.util.Queue;
 */
 public abstract class BaseActivity extends AppCompatActivity {
     protected static long user_id;//生存期为应用存在全程，记录客户端登录的账号id，在登录时从服务端获取
-
+    protected static DataBase db;
     protected static Friend chat_aim;//聊天目的方
     protected static String mainserverIp="192.168.137.1";//服务器ip
     protected static int mainserverPort=12000;//服务器port
@@ -36,6 +37,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     //protected static List<String> online_list=new ArrayList<>();//客户端维护的在线列表，从主服务器获取
     protected static  List<Friend> FriendList=new ArrayList<>();//客户端维护的在线列表，从主服务器获取
     /*每个活动创建时，加入到ActivityCollector中*/
+    protected static String findipbyid(long id)
+    {
+        for (Friend temp:FriendList) {
+            if(temp.getId()==id)
+                return temp.getIp();
+        }
+         return "172.0.0.1";
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

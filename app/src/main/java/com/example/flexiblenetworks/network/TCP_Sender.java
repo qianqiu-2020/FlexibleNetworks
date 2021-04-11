@@ -19,14 +19,15 @@ import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /*网络线程类。Socket默认是使用了TCP三次握手建立连接*/
 //Socket 是对 TCP/IP 协议的封装，Socket 只是个接口不是协议，通过 Socket 我们才能使用 TCP/IP 协议
 public class TCP_Sender implements Runnable {
     public boolean onWork = true;    //线程工作标识
     static Handler handler;
-    //BlockingQueue<Msg> queue = new BlockingQueue<Msg>();//发送队列
-    Queue<Msg> queue = new LinkedList<Msg>();//发送队列
+    BlockingQueue<Msg> queue = new LinkedBlockingDeque<Msg>(10);//发送队列
+    //Queue<Msg> queue = new LinkedList<Msg>();//发送队列
     //注意，需要先添加消息到队列中再打断线程睡眠状态，不要打断睡眠后再添加消息到队列，可能会引发queue
     //不安全，queue需要互斥访问！
     public void putMsg(Msg msg) {
@@ -94,16 +95,12 @@ public class TCP_Sender implements Runnable {
     @Override
     public void run() {
         while (onWork) {
-          //  try {
-            while (!queue.isEmpty()) {
-                sendTcpData(queue.poll());
+            try {
+                sendTcpData(queue.take());//消息为空时一直阻塞
+            //Thread.sleep(10);//为空时休眠，等待唤醒,节省资源
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            Log.d("test",String.valueOf(queue.isEmpty()));
-//                //Thread.sleep(10);//为空时休眠，等待唤醒,节省资源
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//                continue;
-//            }
         }
     }
 }

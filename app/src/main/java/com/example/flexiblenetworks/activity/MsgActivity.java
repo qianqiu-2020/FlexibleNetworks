@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.flexiblenetworks.database.DataBase;
 import com.example.flexiblenetworks.define.Msg;
 import com.example.flexiblenetworks.adapter.MsgAdapter;
 import com.example.flexiblenetworks.R;
@@ -147,7 +148,7 @@ public class MsgActivity extends BaseActivity {
 
 
                     /*新增消息时的操作*/
-                    Msg msg = new Msg(chat_aim.getIp(),0,Msg.TYPE_SENT, user_id, 0,content);
+                    Msg msg = new Msg(chat_aim.getIp(),11000,Msg.TYPE_SENT, user_id, 0,content);
                     msgList.add(msg);//添加消息到消息列表
                     Log.d("mark", content);
                     adapter.notifyItemInserted(msgList.size() - 1);//更新适配器，通知适配器消息列表有新的数据插入
@@ -159,7 +160,7 @@ public class MsgActivity extends BaseActivity {
                         sendData(content);
                     else {//好友消息
                         udp_sender.putMsg(msg);
-                        udp_sender_tread.interrupt();
+                       // udp_sender_tread.interrupt();
 
                         /*私聊情况一：对方在线，通过服务器获取到对方直接发送消息(不经过服务器)*/
 //                        new Thread(new Runnable() {
@@ -281,8 +282,14 @@ public class MsgActivity extends BaseActivity {
             case Msg.TYPE_SENT:
                 //注意图灵传递消息是通过msg.obj,而自己写的则是bundle带的数据！
                     String content=msg.getData().getString("content");
+                    long receiver_id=msg.getData().getLong("receiver");
+                    String time=msg.getData().getString("time");
                     Log.d("mark显示测试", content);
                     showData(content);
+                    DataBase db=new DataBase(this);
+                    db.add_chatFile(msg.arg1,receiver_id,time ,content);
+                    db.openDataBase();
+
                 break;
 
         /*

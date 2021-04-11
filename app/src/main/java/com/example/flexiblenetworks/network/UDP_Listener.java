@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.flexiblenetworks.activity.BaseActivity;
 import com.example.flexiblenetworks.define.Msg;
 
 import java.io.IOException;
@@ -39,14 +40,17 @@ public class UDP_Listener implements Runnable {
                 int len = packet.getLength();
                 String result = new String(temp, 0, len, "UTF-8");
                 Msg reply = new Msg(result);//解析消息
-                Log.d("udp","返回流\n来自"+socket.getRemoteSocketAddress()+"\n发送者id "+String.valueOf(reply.getsender_id())+"\n消息类型 "+String.valueOf(reply.getType())+"\ncontent "+reply.getContent());
+                Log.d("udp", "返回流\n来自" + socket.getRemoteSocketAddress() + "\n发送者id " + String.valueOf(reply.getsender_id()) +"\n接收id " + String.valueOf(reply.getReceiver_id()) + "\n发送时间 " + reply.getTime()+ "\n消息类型 " + String.valueOf(reply.getType()) + "\ncontent " + reply.getContent());
 
                 /*将信息通过handle从当前子线程发送给主线程*/
                 Message message=new Message();
                 message.what=Integer.valueOf(reply.getType());//what字段带有消息类型
                 message.arg1= (int) reply.getsender_id();//arg1字段带有发送者id
                 Bundle data=new Bundle();//携带较多数据时的方法，带有消息正文
+                data.putLong("receiver",reply.getReceiver_id());
                 data.putString("content",reply.getContent());
+                data.putString("time",reply.getTime());
+
                 message.setData(data);
                 handler.sendMessage(message);
             }

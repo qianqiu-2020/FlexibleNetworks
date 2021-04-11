@@ -70,8 +70,10 @@ public class FriendChatActivity extends BaseActivity {
 /*        ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null) actionBar.hide();*/
 
-
-        tcp_sender.setHandler(handler);//根据不同活动中设置，可以使网络线程发送到不同活动中。
+        tcp_sender.setHandler(handler);
+        udp_sender.setHandler(handler);
+        udp_listener.setHandler(handler);
+        //根据不同活动中设置，可以使网络线程发送到不同活动中。
         /*向服务器发送申请，获取在线列表*/
         Msg msg=new Msg(mainserverIp,mainserverPort,Msg.TYPE_ONLINELIST,user_id,mainserverId,"get user online list");//构造自定义协议内容
         Log.d("msg","发送消息构造完成，内容为"+msg.getContent());

@@ -41,8 +41,8 @@ public class messageAdapter extends ArrayAdapter<messageItem> {
         //EditText editText=(EditText)view.findViewById(R.id.edit_text);
         /*把从适配器对应的List中取到的数据设置到控件中*/
         messageImage.setImageResource(Onmessage.getImageId());
-        messageName.setText(Onmessage.getName());
-        messageContent.setText(Onmessage.getPartMessage());
+        messageName.setText(String.valueOf(Onmessage.getType()));
+        messageContent.setText(Onmessage.getPartContent());
         //editText.setText(friend.getName());
 
         return view;

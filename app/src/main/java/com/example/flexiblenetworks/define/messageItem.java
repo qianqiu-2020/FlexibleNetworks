@@ -40,30 +40,88 @@ package com.example.flexiblenetworks.define;
 *
 * */
 public class messageItem {
-    private String name;
-    private int ImageId;
-    private String partMessage;
-    public Friend friend;
-    public messageItem(String name,int imageId,String partMessage){
-        this.name=name;
-        this.ImageId=imageId;
-        this.partMessage=partMessage;
+    public boolean success;//用于显示数据库查询结果成功与失败
+    private int type;//消息类型(群聊，私聊，交易，好友申请等)
+    private long sender_id;//主索引项id(好友id，群聊id)
+    private String sender_ip;//辅助索引ip(私聊ip，群聊服务器ip)
+    private long receiver_id;
+    private int ImageId;//描述信息，图片
+    private String partContent;//描述信息，概述文字
+    private int number;//未读消息数量
+    String time;//最新一条的消息构造时间
+
+    public messageItem(boolean success, int type, long sender_id, String sender_ip, int imageId, String partContent, int number, String time) {
+        this.success = success;
+        this.type = type;
+        this.sender_id = sender_id;
+        this.sender_ip = sender_ip;
+        ImageId = imageId;
+        this.partContent = partContent;
+        this.number = number;
+        this.time = time;
     }
 
-    public String getName() {
-        return name;
+//数据库用
+    public messageItem(boolean success,int type, long sender_id,long receiver_id,  String time,String partContent) {
+        this.success = success;
+        this.type = type;
+        this.sender_id = sender_id;
+        this.sender_ip = "172.0.0.1";
+        this.receiver_id=receiver_id;
+        this.time=time;
+        this.partContent = partContent;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public messageItem(int type, long sender_id, String sender_ip, int imageId, String partContent, String time) {
+        this.success = success;
+        this.type = type;
+        this.sender_id = sender_id;
+        this.sender_ip = sender_ip;
+        ImageId = imageId;
+        this.partContent = partContent;
+        this.time=time;
     }
 
-    public Friend getFriend() {
-        return friend;
+    public messageItem(int type, long sender_id, String sender_ip, int imageId, String partContent, int number, String time) {
+        this.type = type;
+        this.sender_id = sender_id;
+        this.sender_ip = sender_ip;
+        ImageId = imageId;
+        this.partContent = partContent;
+        this.number = number;
+        this.time = time;
     }
 
-    public void setFriend(Friend friend) {
-        this.friend = friend;
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public long getSender_id() {
+        return sender_id;
+    }
+
+    public void setSender_id(long sender_id) {
+        this.sender_id = sender_id;
+    }
+
+    public String getSender_ip() {
+        return sender_ip;
+    }
+
+    public void setSender_ip(String sender_ip) {
+        this.sender_ip = sender_ip;
     }
 
     public int getImageId() {
@@ -74,11 +132,27 @@ public class messageItem {
         ImageId = imageId;
     }
 
-    public String getPartMessage() {
-        return partMessage;
+    public String getPartContent() {
+        return partContent;
     }
 
-    public void setPartMessage(String partMessage) {
-        this.partMessage = partMessage;
+    public void setPartContent(String partContent) {
+        this.partContent = partContent;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

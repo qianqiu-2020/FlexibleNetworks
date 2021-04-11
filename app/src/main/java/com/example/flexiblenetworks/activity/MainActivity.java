@@ -84,8 +84,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         /*集中创建网络线程*/
         tcp_sender.setHandler(handler);
-        udp_sender.setHandler(handler2);
-        udp_listener.setHandler(handler2);
+        udp_sender.setHandler(handler);
+        udp_listener.setHandler(handler);
         udp_sender_tread = new Thread(udp_sender);//发送udp消息
         udp_listener_tread = new Thread(udp_listener);//接收udp消息
 //
@@ -140,7 +140,6 @@ public class MainActivity extends BaseActivity {
         });
 
         /*主动向服务器发送获取公告信息*/
-        Log.d("ttt1",String.valueOf(tcp_sender_tread.isAlive()));
         Msg msg = new Msg(mainserverIp,mainserverPort,Msg.TYPE_BROADCAST, user_id, mainserverId, "broadcast");
         Log.d("msg", "消息构造完成");
         tcp_sender.putMsg(msg);
@@ -243,23 +242,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 messageItem messageItem = MsgList.get(position);//获取对应项内容
-                //临时测试设置
-                messageItem.setFriend(new Friend(111, "发送者", R.drawable.image_6, "127.0.0.1", 11000));
-                Toast.makeText(MainActivity.this, messageItem.getName(), Toast.LENGTH_SHORT).show();
 
-                chat_aim = messageItem.getFriend();
+                chat_aim = new Friend(messageItem.getSender_id(),String.valueOf(messageItem.getSender_id()),messageItem.getImageId(),messageItem.getSender_ip(),11000);
 
                 Intent intent = new Intent(MainActivity.this, MsgActivity.class);//点击时跳转到聊天页面
                 startActivity(intent);
             }
         });
-        messageItem temp = new messageItem("类型" + String.valueOf(5) + "id" + String.valueOf(22), R.drawable.image_5, "test");
-        for (int i = 0; i < 10; i++) {
-            MsgList.add(temp);
-            MsgList.add(temp);
-            MsgList.add(temp);
-            MsgList.add(temp);
-        }
+
 
         /*待写功能
         * 向服务端获取未读消息，使用tcp，一次连接多次传输
@@ -305,12 +295,12 @@ public class MainActivity extends BaseActivity {
             }
             case Msg.TYPE_SENT:
                 //注意图灵传递消息是通过msg.obj,而自己写的则是bundle带的数据！
+                String sender_ip = findipbyid(msg.arg1);
+                String time = msg.getData().getString("time");
                 Log.d("mark显示测试", content);
-                messageItem temp = new messageItem("类型" + String.valueOf(msg.what) + "id" + String.valueOf(msg.arg1), R.drawable.image_1, content);
+                Log.d("mark显示测试", sender_ip);
+                messageItem temp = new messageItem(msg.what,msg.arg1,sender_ip,R.drawable.image_5, content,time);
 
-                //查找发送者ip
-
-                temp.setFriend(new Friend(msg.arg1, "发送者", R.drawable.image_6, "", 11000));
                 MsgList.add(temp);
                 adapter.notifyDataSetChanged();
                 //notifyItemInserted(msgList.size()-1);//更新适配器，通知适配器消息列表有新的数据插入
@@ -336,15 +326,16 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-//        tcp_sender.setHandler(handler);
-//        udp_sender.setHandler(handler);
-//        udp_listener.setHandler(handler);
+        tcp_sender.setHandler(handler);
+        udp_sender.setHandler(handler);
+        udp_listener.setHandler(handler);
+        Msg msg = new Msg(mainserverIp,mainserverPort,Msg.TYPE_BROADCAST, user_id, mainserverId, "broadcast");
+        tcp_sender.putMsg(msg);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("ttt2.2",String.valueOf(tcp_sender_tread.isAlive()));
     }
 
     @Override

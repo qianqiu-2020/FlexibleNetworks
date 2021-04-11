@@ -9,7 +9,8 @@ import android.os.Message;
 
 import com.example.flexiblenetworks.activity.BaseActivity;
 import com.example.flexiblenetworks.define.Friend;
-import com.example.flexiblenetworks.define.Friend_Message;
+
+import com.example.flexiblenetworks.define.messageItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +64,14 @@ public class DataBase extends BaseActivity {
     }
 
     /*添加聊天记录，参数：发送者id、接收者id、信息，发送者和接收者中有一个为User*/
-    public void add_chatFile(long sender_id, long receiver_id, String message)
+    public void add_chatFile(long sender_id, long receiver_id,String time ,String message)
     {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
             values.put("sender_id", sender_id);
             values.put("receiver_id", receiver_id);
+           // values.put("send_time",time );
             values.put("message", message);
             long friend_id;
             if (sender_id == user_id)
@@ -77,7 +79,7 @@ public class DataBase extends BaseActivity {
             else
                 friend_id = sender_id;
             db.insert("chatFile_" + friend_id, null, values);
-            db.setTransactionSuccessful();
+          //  db.setTransactionSuccessful();
         }catch (SQLiteException e) {
             db.close();
             e.printStackTrace();
@@ -122,22 +124,22 @@ public class DataBase extends BaseActivity {
     }
 
     /*查询聊天记录，结果以List储存，参数：朋友id、已查询聊天记录数（0，10，20...）*/
-    public List<Friend_Message> search_chatFile(long friend_id, int num) {
+    public List<messageItem> search_chatFile(long friend_id, int num) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        List<Friend_Message> result_chatFiles = new ArrayList<Friend_Message>();
+        List<messageItem> result_chatFiles = new ArrayList<messageItem>();
         try {
             Cursor cursor = db.query("chatFile" + friend_id, null, null, null, null, null, "send_time desc");
             cursor.moveToLast();
             int last_position = cursor.getPosition();//将指针移到表的末尾
             if (cursor.moveToPosition(last_position-num)) {//将指针移到上次读取的位置
                 do {
-                    Friend_Message result;
+                    messageItem result;
                     long sender_id = cursor.getInt(cursor.getColumnIndex("sender_id"));
                     long receiver_id = cursor.getInt(cursor.getColumnIndex("receiver_id"));
                     String send_time = cursor.getString(cursor.getColumnIndex("send_time"));
                     int message_type = cursor.getInt(cursor.getColumnIndex("message_type"));
                     String message = cursor.getString(cursor.getColumnIndex("message"));
-                    result = new Friend_Message(true, sender_id, receiver_id, send_time, message_type, message);
+                    result = new messageItem(true,message_type, sender_id,receiver_id, send_time, message);
                     result_chatFiles.add(result);
                 } while (cursor.moveToPrevious()||cursor.getPosition()==last_position-num-10);//如果已查询完全部信息或本次已查询10条信息
             }

@@ -39,6 +39,7 @@ public class Msg extends Object {
 
     String ip;//目的ip
     int port;//目的端口
+
     private int type;//消息类型
     private long sender_id;//发送者id，0为服务端，或者默认id
     private long receiver_id;//接收者id

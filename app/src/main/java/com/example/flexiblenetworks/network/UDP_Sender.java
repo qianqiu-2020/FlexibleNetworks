@@ -42,16 +42,17 @@ public class UDP_Sender implements Runnable {
      * */
     public void sendUdpData(Msg msg) {
        try{
+           Log.d("udp","输出流\n"+"目的IP"+msg.getIp()+" 端口"+String.valueOf(msg.getPort())+"\n发送id "+String.valueOf(msg.getsender_id())+"\n消息类型 "+String.valueOf(msg.getType())+"\ncontent "+msg.getContent());
         // 创建发送端Socket, 绑定本机IP地址, 绑定任意一个未使用的端口号
         DatagramSocket socket = new DatagramSocket();
         // 创建发送端Packet, 指定数据, 长度, 地址, 端口号
-        String temp = msg.getType() + "\r\n" + msg.getsender_id() + "\r\n" + msg.getContent();
-        DatagramPacket packet = new DatagramPacket(temp.getBytes("UTF-8"), temp.getBytes().length, InetAddress.getByName(msg.getIp()),msg.getPort());
+           String temp = msg.getType() + "\r\n" + msg.getsender_id() +"\r\n" +msg.getReceiver_id()+"\r\n" +msg.getTime()+ "\r\n" + msg.getContent();//将自定义协议封装为String类型用于传输，接收方可以再解析并重新构造出Msg类型
+           DatagramPacket packet = new DatagramPacket(temp.getBytes("UTF-8"), temp.getBytes().length, InetAddress.getByName(msg.getIp()),msg.getPort());
         // 使用Socket发送Packet
         socket.send(packet);
         // 关闭Socket
         socket.close();
-           Log.d("udp","输出流\n"+"目的IP"+msg.getIp()+" 端口"+String.valueOf(msg.getPort())+"\n发送id "+String.valueOf(msg.getsender_id())+"\n消息类型 "+String.valueOf(msg.getType())+"\ncontent "+msg.getContent());
+
        } catch (SocketException | UnsupportedEncodingException e) {
            e.printStackTrace();
        } catch (IOException e) {
@@ -64,10 +65,9 @@ public class UDP_Sender implements Runnable {
         while(onWork) {
             while (!queue.isEmpty()) {
                 sendUdpData(queue.poll());
-
             }
             try {
-                Thread.sleep(100000);//为空时休眠，等待唤醒
+                Thread.sleep(100);//为空时休眠，等待唤醒
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
