@@ -167,6 +167,9 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent=new Intent(ActivityCollector.activities.get(ActivityCollector.activities.size()-1),MainActivity.class);
+                startActivity(intent);
+
 
                 String account=accountEdit.getText().toString();
                 String password=passwordEdit.getText().toString();

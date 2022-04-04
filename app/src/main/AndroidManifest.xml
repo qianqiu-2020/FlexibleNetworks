@@ -51,16 +51,19 @@
         <activity
             android:name=".activity.FriendChatActivity"
             android:label="好友列表1" />
-        <activity android:name=".activity.InformationActivity" />
+
+        <activity android:name=".activity.InformationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!--测试pgp-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

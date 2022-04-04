@@ -113,7 +113,6 @@ public class FriendChatActivity extends BaseActivity {
             case Msg.TYPE_ONLINELIST:{
                 Log.d("msgProssess_Chat","收到申请的在线列表"+content);
                 initFriends();
-                List<Friend> tempfriendlist=new ArrayList<>();
                 String[] templist=content.split("\n");
                 for(int i=0;i<templist.length;i++)
                 {

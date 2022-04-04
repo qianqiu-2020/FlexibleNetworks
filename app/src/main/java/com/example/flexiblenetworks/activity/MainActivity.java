@@ -43,6 +43,7 @@ import java.util.List;
 
 /*此活动为主界面，集成了各种不同的功能模块，也包含了公告栏，此活动登录后一直存在，不被销毁*/
 public class MainActivity extends BaseActivity {
+
     private Button information;
     private Button friendchat;
     private Button location;

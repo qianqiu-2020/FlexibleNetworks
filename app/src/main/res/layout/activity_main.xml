@@ -58,7 +58,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
-                            android:text="公开平台"></Button>
+                            android:text="知识库"></Button>
 
                         <Button
                             android:id="@+id/friendchat"

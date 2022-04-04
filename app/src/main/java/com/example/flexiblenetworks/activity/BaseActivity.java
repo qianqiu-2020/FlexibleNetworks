@@ -30,7 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected static long user_id;//生存期为应用存在全程，记录客户端登录的账号id，在登录时从服务端获取
     protected static DataBase db;
     protected static Friend chat_aim;//聊天目的方
-    protected static String mainserverIp="192.168.137.1";//服务器ip
+    protected static String mainserverIp="172.27.13.127";//服务器ip
     protected static int mainserverPort=12000;//服务器port
     protected static int mainserverId=102;//服务器id
     protected static int mark=1;//客户端位置信息向服务端发送次数，在LBSactivity（定位活动）中被使用
